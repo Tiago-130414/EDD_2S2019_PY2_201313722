@@ -6,9 +6,9 @@ public class NodoHashTable {
     String usuario;
     String contrasena;
 
-    public NodoHashTable(String usuario, String contrasena) {
-        this.usuario = usuario;
-        this.contrasena = contrasena;
+    public NodoHashTable(String us, String cont) {
+        this.usuario = us;
+        this.contrasena = cont;
     }
 
     public String getUsuario() {

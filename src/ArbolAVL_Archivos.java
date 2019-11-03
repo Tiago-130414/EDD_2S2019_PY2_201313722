@@ -288,11 +288,9 @@ public class ArbolAVL_Archivos {
             w.write("\tcolor=lightgrey;\n");
             w.write("\tlabelloc=t;\n");
             w.write("\tnode [shape = record, style=\"rounded,filled\", fillcolor=\"orange:red\",width=0.7,height=0.5];\n");
-            //strings con datos arbol
-            //w.write("prueba->prueba2");
             w.write(listarNodos(raiz));
             w.write(apuntarNodos(raiz));
-            w.write("\tlabel=\"Arbol Binario De Busqueda\";\n");
+            w.write("\tlabel=\"Arbol AVL\";\n");
             w.write("\t}\n");
             w.write("}");
             wr.close();
@@ -308,7 +306,7 @@ public class ArbolAVL_Archivos {
                 "-Tpng",
                 "C:\\Graficas_Proyecto2\\ArbolAVL.dot",
                 "-o",
-                "C:\\Graficas_Proyecto2\\ArbolAVL.png"}; //Comando de apagado en windows
+                "C:\\Graficas_Proyecto2\\ArbolAVL.png"};
             Runtime.getRuntime().exec(cmd);
             Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\ArbolAVL.png"));
         } catch (IOException ioe) {
