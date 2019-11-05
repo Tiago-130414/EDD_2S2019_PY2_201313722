@@ -113,7 +113,9 @@ public class Login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
        usuarios.ingresarVal();
-       usuarios.graficar(usuarios.usuarios);
+       b.inserar();
+     
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     @Override
@@ -147,5 +149,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
      HashTable usuarios = new HashTable();
+     Bitacora b = new Bitacora();
 
 }
