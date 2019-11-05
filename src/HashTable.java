@@ -9,6 +9,9 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -24,13 +27,9 @@ public class HashTable {
         this.usuarios = new NodoHashTable[7];
         //inicializo el vector
         for (int i = 0; i < usuarios.length; i++) {
-            usuarios[i] = new NodoHashTable("-1", "-1");
+            usuarios[i] = new NodoHashTable("-1", "-1", "-1");
         }
-        System.out.println(usuarios.length);
-
-        usuarios[0].setUsuario("Admin");
-        usuarios[0].setContrasena("Admin");
-
+        funcionHash(usuarios, "Admin", "Admin");
     }
 
     public void ingresarVal() {
@@ -46,19 +45,20 @@ public class HashTable {
         int ubi = hashDivision(usu, arr.length);
         int newUbi;
         int n = 1;
-        String cont;
+        String cont = retornarHash(contra);
         //System.out.println(calcularUtilizacion(arr));
         if (arr[ubi].getUsuario().equals("-1")) {
             arr[ubi].setUsuario(usu);
-            arr[ubi].setContrasena(contra);
+            arr[ubi].setContrasena(cont);
+            arr[ubi].setTimestamp(timestamp());
         } else {
             while (true) {
                 newUbi = ubi + squaring(n);
                 if (newUbi < arr.length) {
                     if (arr[newUbi].getUsuario().equals("-1")) {
                         arr[newUbi].setUsuario(usu);
-                        cont = retornarHash(contra);
                         arr[newUbi].setContrasena(cont);
+                        arr[newUbi].setTimestamp(timestamp());
                         break;
                     }
                 } else {
@@ -72,8 +72,9 @@ public class HashTable {
             System.out.println("-----------------");
             System.out.println("REDIMENSIONADO");
             System.out.println("-----------------");
-            mostrar(arr);
+
         }
+        mostrar(usuarios);
     }
 
     public int hashDivision(String cad, int tamArr) {
@@ -129,11 +130,37 @@ public class HashTable {
 
         this.usuarios = new NodoHashTable[nuevoTam];
         for (int i = 0; i < usuarios.length; i++) {
-            usuarios[i] = new NodoHashTable("-1", "-1");
+            usuarios[i] = new NodoHashTable("-1", "-1", "-1");
         }
         for (int i = 0; i < temp.length; i++) {
             if (temp[i].getUsuario() != "-1") {
-                funcionHash(usuarios, temp[i].getUsuario(), temp[i].getContrasena());
+                insertarDatosRedimension(usuarios, temp[i].getUsuario(), temp[i].getContrasena(),temp[i].getTimestamp());
+            }
+        }
+    }
+
+    public void insertarDatosRedimension(NodoHashTable[] arr, String usu, String contra,String tmstmp) {
+        int ubi = hashDivision(usu, arr.length);
+        int newUbi;
+        int n = 1;
+        if (arr[ubi].getUsuario().equals("-1")) {
+            arr[ubi].setUsuario(usu);
+            arr[ubi].setContrasena(contra);
+            arr[ubi].setTimestamp(tmstmp);
+        } else {
+            while (true) {
+                newUbi = ubi + squaring(n);
+                if (newUbi < arr.length) {
+                    if (arr[newUbi].getUsuario().equals("-1")) {
+                        arr[newUbi].setUsuario(usu);
+                        arr[newUbi].setContrasena(contra);
+                        arr[newUbi].setTimestamp(tmstmp);
+                        break;
+                    }
+                } else {
+                    n = 0;
+                }
+                n++;
             }
         }
     }
@@ -182,49 +209,70 @@ public class HashTable {
         String hash = " ";
         try {
             hash = toHexString(getSHA(contrasena));
+            System.out.println(hash);
         } catch (NoSuchAlgorithmException e) {
             System.out.println("Error: " + e);
         }
         return hash;
     }
 
-    public void graficar() {
+    public String recorrerTabla(NodoHashTable[] arr) {
+        String cad = "\t\t\t<tr><td>Indice</td><td>Usuario</td><td>Contraseña</td><td>Timestamp</td></tr>\n";
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].getUsuario() != "-1") {
+                cad += "\t\t\t<tr><td>" + Integer.toString(i) + "</td><td>" + arr[i].getUsuario() + "</td><td>" + arr[i].getContrasena() + "</td><td>" + arr[i].getTimestamp() + "</td></tr>\n";
+            } else {
+                cad += "\t\t\t<tr><td>" + Integer.toString(i) + "</td><td>     </td><td>     </td><td>     </td></tr>\n";
+            }
+        }
+        return cad;
+    }
+
+    public void graficar(NodoHashTable[] arr) {
         File f;
         f = new File("C:\\Graficas_Proyecto2\\HashTable.dot");
         try {
             FileWriter w = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(w);
             PrintWriter wr = new PrintWriter(bw);
-            w.write("digraph hashT\n{");
+            w.write("digraph hashT{\n");
             w.write("\tlabelloc=t;\n");
+            w.write("\tnode[shape=plaintext];\n");
             w.write("\tsubgraph cluster_0{\n");
             w.write("\t\tstyle=filled;\n");
             w.write("\t\tcolor=lightgrey;\n");
-            w.write("\t\t<TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"0\">\n");
-            //falta obtener los datos y construir la tabla mediante HTML
-
-            //w.write(listarNodos(raiz));
-            //w.write(apuntarNodos(raiz));
-            w.write("\t\tlabel=\"HashTable Usuarios\";\n");
+            w.write("\tstruct5[label=<<TABLE BORDER=\"1\" CELLBORDER=\"1\" CELLSPACING=\"0\">\n");
+            w.write(recorrerTabla(arr));
+            w.write("\t\t</TABLE>>style = filled,fillcolor = \"orange:red\",fontname = \"helvetica\"];\n");
             w.write("\t}\n");
+            w.write("\tlabel=\"HashTable Usuarios\";\n");
             w.write("}");
             wr.close();
             bw.close();
         } catch (IOException e) {
         }
+        ejecutar();
     }
 
     public void ejecutar() {
         try {
             String[] cmd = {"C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe",
-                "-Tpng",
+                "-Tjpg",
                 "C:\\Graficas_Proyecto2\\HashTable.dot",
                 "-o",
-                "C:\\Graficas_Proyecto2\\HashTable.png"};
+                "C:\\Graficas_Proyecto2\\HashTable.jpg"};
             Runtime.getRuntime().exec(cmd);
-            Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\HashTable.png"));
+            Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\HashTable.jpg"));
         } catch (IOException ioe) {
             System.out.println(ioe);
         }
+    }
+
+    public String timestamp(){
+        String tmstamp;
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        tmstamp = hourdateFormat.format(date);
+        return tmstamp;
     }
 }
