@@ -4,12 +4,6 @@ import java.awt.Toolkit;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author santi
@@ -112,8 +106,18 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-       usuarios.ingresarVal();
-       b.inserar();
+       //usuarios.ingresarVal();
+      // b.inserar();
+     h.insertarNodo(1,5,"kk5","123");
+     h.insertarNodo(2,4,"kk2","123");
+     h.insertarNodo(2,5,"kk7","123");
+     h.insertarNodo(3,3,"kk3","123");
+     h.insertarNodo(4,2,"kk4","123");
+     h.insertarNodo(5,1,"kk6","123");
+     h.mostrar();
+        System.out.println("------------------------------------------");
+     h.mostrarF();
+ 
      
        
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -150,5 +154,7 @@ public class Login extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
      HashTable usuarios = new HashTable();
      Bitacora b = new Bitacora();
+     
+     MatrizCarpetas h = new MatrizCarpetas();
 
 }
