@@ -108,14 +108,16 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
        //usuarios.ingresarVal();
       // b.inserar();
-     h.insertarNodo(1,5,"kk5","123");
-     h.insertarNodo(2,4,"kk2","123");
-     h.insertarNodo(2,5,"kk7","123");
-     h.insertarNodo(3,3,"kk3","123");
-     h.insertarNodo(4,2,"kk4","123");
-     h.insertarNodo(5,1,"kk6","123");
+     h.insertarNodo("/","/","kk5","123");
+     h.insertarNodo("home","home","kk2","123");
+     h.insertarNodo("documents","documents","kk7","123");
+     h.insertarNodo("usac","usac","kk3","123");
+     h.insertarNodo("vendor","vendor","kk4","123");
+     h.insertarNodo("view","view","kk6","123");
+     h.insertarNodo("vendor","prueba","aqui estoy","123");
+     h.graficarBitacora();
      h.mostrar();
-        System.out.println("------------------------------------------");
+     System.out.println("------------------------------------------");
      h.mostrarF();
  
      

@@ -5,14 +5,14 @@
 public class NodoMatriz {
     String nombre;
     String fechaCreacion;
-    int fila;
-    int columna;
+    String fila;
+    String columna;
     NodoMatriz siguiente;
     NodoMatriz anterior;
     NodoMatriz arriba;
     NodoMatriz abajo;
 
-    public NodoMatriz(int fila,int columna,String nombre, String fechaCreacion) {
+    public NodoMatriz(String fila,String columna,String nombre, String fechaCreacion) {
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
         this.fila = fila;
@@ -23,19 +23,19 @@ public class NodoMatriz {
         this.abajo = null;
     }
 
-    public int getFila() {
+    public String getFila() {
         return fila;
     }
 
-    public void setFila(int fila) {
+    public void setFila(String fila) {
         this.fila = fila;
     }
 
-    public int getColumna() {
+    public String getColumna() {
         return columna;
     }
 
-    public void setColumna(int columna) {
+    public void setColumna(String columna) {
         this.columna = columna;
     }
     
