@@ -1,7 +1,10 @@
 
 import java.awt.Desktop;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,7 +24,8 @@ public class HashTable {
 
     //creo el array
     NodoHashTable[] usuarios;
-
+    NodoHashTable[] us;
+    int tamano;
     public HashTable() {
         //reservo la memoria
         this.usuarios = new NodoHashTable[7];
@@ -30,6 +34,11 @@ public class HashTable {
             usuarios[i] = new NodoHashTable("-1", "-1", "-1");
         }
         funcionHash(usuarios, "Admin", "Admin");
+
+        us = new NodoHashTable[1000];
+        for (int i = 0; i < us.length; i++) {
+            us[i] = new NodoHashTable(" ", " ", " ");
+        }
     }
 
     public void ingresarVal() {
@@ -51,6 +60,7 @@ public class HashTable {
             arr[ubi].setUsuario(usu);
             arr[ubi].setContrasena(cont);
             arr[ubi].setTimestamp(timestamp());
+            
         } else {
             while (true) {
                 newUbi = ubi + squaring(n);
@@ -59,6 +69,7 @@ public class HashTable {
                         arr[newUbi].setUsuario(usu);
                         arr[newUbi].setContrasena(cont);
                         arr[newUbi].setTimestamp(timestamp());
+                       
                         break;
                     }
                 } else {
@@ -134,12 +145,12 @@ public class HashTable {
         }
         for (int i = 0; i < temp.length; i++) {
             if (temp[i].getUsuario() != "-1") {
-                insertarDatosRedimension(usuarios, temp[i].getUsuario(), temp[i].getContrasena(),temp[i].getTimestamp());
+                insertarDatosRedimension(usuarios, temp[i].getUsuario(), temp[i].getContrasena(), temp[i].getTimestamp());
             }
         }
     }
 
-    public void insertarDatosRedimension(NodoHashTable[] arr, String usu, String contra,String tmstmp) {
+    public void insertarDatosRedimension(NodoHashTable[] arr, String usu, String contra, String tmstmp) {
         int ubi = hashDivision(usu, arr.length);
         int newUbi;
         int n = 1;
@@ -268,11 +279,98 @@ public class HashTable {
         }
     }
 
-    public String timestamp(){
+    public String timestamp() {
         String tmstamp;
         Date date = new Date();
         DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         tmstamp = hourdateFormat.format(date);
         return tmstamp;
+    }
+
+    public NodoHashTable[] leerCsv(String nombreAr) {
+        String csvFile = nombreAr.toString();
+        BufferedReader br = null;
+        String line;
+        int cont = 0;
+        NodoHashTable[] arr = {};
+        String separador = ",";
+        try {
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+                String[] datos = line.split(separador);
+                if (!(datos[0].toLowerCase()).equals("usuario") && !(datos[1].toLowerCase()).equals("password")) {
+                    arr = cargarUsuarios(datos[0], datos[1]);
+                    //funcionHash(usuarios,datos[0],datos[1]);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error al leer archivo: " + e);
+        } catch (IOException e) {
+            System.out.println("Exception" + e);
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    System.out.println("Error al terminar lectura" + e);
+                }
+            }
+        }
+        return arr;
+    }
+
+    public boolean existeUsuario(String usuario, String contrasena) {
+        boolean existe = false;
+        String has = retornarHash(contrasena);
+        for (int i = 0; i < usuarios.length; i++) {
+            if (usuarios[i].usuario.equals(usuario) && usuarios[i].contrasena.equals(has)) {
+                existe = true;
+                break;
+            }
+        }
+        return existe;
+    }
+
+    public boolean existeU(String usuario) {
+        boolean existe = false;
+        for (int i = 0; i < usuarios.length; i++) {
+            if (usuarios[i].usuario.equals(usuario)) {
+                existe = true;
+                break;
+            }
+        }
+        return existe;
+    }
+
+    public NodoHashTable[] cargarUsuarios(String usuario, String contrasena) {
+        int longC = contrasena.length();
+        if (existeU(usuario) == false) {
+            //System.out.println(existeU(usuario));
+
+            if (longC < 8) {
+                for (int i = 0; i < us.length; i++) {
+                    if (us[i].usuario.equals(" ")) {
+                        us[i].setUsuario(usuario);
+                        us[i].setContrasena("Contraseña menor a 8 digitos");
+                        break;
+                    }
+                }
+            } else {
+                
+                funcionHash(this.usuarios, usuario, contrasena);
+                tamano++;
+            }
+        } else {
+            for (int i = 0; i < us.length; i++) {
+                if (us[i].usuario.equals(" ")) {
+                    us[i].setUsuario(usuario);
+                    us[i].setContrasena("Usuario ya existe");
+                    break;
+                }
+                
+            }
+
+        }
+        return us;
     }
 }

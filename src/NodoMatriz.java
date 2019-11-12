@@ -7,12 +7,16 @@ public class NodoMatriz {
     String fechaCreacion;
     String fila;
     String columna;
+    int indiceC;
+    int indiceF;
     NodoMatriz siguiente;
     NodoMatriz anterior;
     NodoMatriz arriba;
     NodoMatriz abajo;
 
     public NodoMatriz(String fila,String columna,String nombre, String fechaCreacion) {
+        this.indiceC = 0;
+        this.indiceF = 0;
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
         this.fila = fila;

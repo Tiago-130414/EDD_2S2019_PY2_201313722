@@ -1,6 +1,7 @@
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -15,6 +16,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -29,8 +31,8 @@ public class Login extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        user = new javax.swing.JTextField();
+        pass = new javax.swing.JPasswordField();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
@@ -77,8 +79,8 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton2)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(pass, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(user, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
         );
@@ -89,11 +91,11 @@ public class Login extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -108,18 +110,36 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
        //usuarios.ingresarVal();
       // b.inserar();
-     h.insertarNodo("/","/","kk5","123");
+     /*h.insertarNodo("/","/","kk5","123");
      h.insertarNodo("home","home","kk2","123");
      h.insertarNodo("documents","documents","kk7","123");
      h.insertarNodo("usac","usac","kk3","123");
      h.insertarNodo("vendor","vendor","kk4","123");
      h.insertarNodo("view","view","kk6","123");
-     h.insertarNodo("vendor","prueba","aqui estoy","123");
-     h.graficarBitacora();
-     h.mostrar();
-     System.out.println("------------------------------------------");
-     h.mostrarF();
- 
+     h.insertarNodo("vendor","usac","kk48","123");
+     h.insertarNodo("vendor","documents","kk49","123");*/
+     //h.insertarNodo("vendor","prueba","aqui estoy","123");
+     //h.insertarNodo("hola","view","gh","123");
+     //h.graficarBitacora();
+     /*h.mostrar();
+     System.out.println("------------------------------------------");*/
+     //h.mostrarF();
+     //usuarios.graficar(usuarios.usuarios);
+     String usuario;
+     usuario = user.getText();
+     String contrasena;
+     contrasena = pass.getText();
+        if (usuarios.existeUsuario(usuario, contrasena)) {
+            Principal ventanaP  = new Principal();
+            ventanaP.setVisible(true);
+            ventanaP.actualizarUsuario(usuario);
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(null,"Error usuario no existe o contraseña invalida");
+            user.setText("");
+            pass.setText("");
+        }
+            
      
        
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -151,10 +171,10 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField pass;
+    private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
-     HashTable usuarios = new HashTable();
+     public static HashTable usuarios = new HashTable();
      Bitacora b = new Bitacora();
      
      MatrizCarpetas h = new MatrizCarpetas();
