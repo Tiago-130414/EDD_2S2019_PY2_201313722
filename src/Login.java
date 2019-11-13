@@ -57,6 +57,11 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setText("PASSWORD:");
 
         jButton2.setText("REGISTRARSE");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/us.png"))); // NOI18N
         jLabel3.setLabelFor(jLabel1);
@@ -110,19 +115,7 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
        //usuarios.ingresarVal();
       // b.inserar();
-     /*h.insertarNodo("/","/","kk5","123");
-     h.insertarNodo("home","home","kk2","123");
-     h.insertarNodo("documents","documents","kk7","123");
-     h.insertarNodo("usac","usac","kk3","123");
-     h.insertarNodo("vendor","vendor","kk4","123");
-     h.insertarNodo("view","view","kk6","123");
-     h.insertarNodo("vendor","usac","kk48","123");
-     h.insertarNodo("vendor","documents","kk49","123");*/
-     //h.insertarNodo("vendor","prueba","aqui estoy","123");
-     //h.insertarNodo("hola","view","gh","123");
-     //h.graficarBitacora();
-     /*h.mostrar();
-     System.out.println("------------------------------------------");*/
+     System.out.println("------------------------------------------");
      //h.mostrarF();
      //usuarios.graficar(usuarios.usuarios);
      String usuario;
@@ -143,6 +136,27 @@ public class Login extends javax.swing.JFrame {
      
        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+     h.insertarNodo("/","/","kk5","123");   
+     h.insertarNodo("home","home","kk2","123");
+     h.insertarNodo("documents","documents","kk7","123");
+     //h.insertarNodo("documents","home","kk8","1234");
+     h.insertarNodo("usac","usac","kk30","123");
+     h.insertarNodo("home","documents","pre","12345");
+     h.insertarNodo("documents","usac","cagada","12345");
+     h.insertarNodo("a","a","hola","12345");
+     h.insertarNodo("/","documents","preo","12345");
+     //h.insertarNodo("usac","documents","50","1324");
+     /*h.insertarNodo("vendor","vendor","kk4","123");
+     h.insertarNodo("view","view","kk6","123");
+     h.insertarNodo("vendor","usac","kk48","123");
+     h.insertarNodo("vendor","documents","kk49","123");
+     h.insertarNodo("vendor","prueba","aqui estoy","123");
+     h.insertarNodo("hola","view","gh","123");*/
+     h.graficarBitacora();
+     h.mostrar();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     @Override
     public Image getIconImage() {

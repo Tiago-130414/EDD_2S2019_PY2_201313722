@@ -55,18 +55,7 @@ public class MatrizCarpetas {
                 nuevoCol.siguiente = temporalColumnas;
                 temporalColumnas.anterior = nuevoCol;
                 this.columnas = nuevoCol;
-            }/*else if(compararCadena(temporalColumnas.columna, columna)==0){
-                NodoMatriz tempCI = temporalColumnas.siguiente;
-                if (tempCI!=null) {
-                    nuevoCol.anterior = temporalColumnas;
-                    nuevoCol.siguiente = tempCI;
-                    tempCI.anterior = nuevoCol;
-                    temporalColumnas.siguiente = nuevoCol;
-                }else{
-                    temporalColumnas.siguiente = nuevoCol;
-                    nuevoCol.anterior = temporalColumnas;
-                }
-            } */ else {
+            } else {
                 nuevoCol = temporalColumnas;
             }
         }
@@ -108,64 +97,49 @@ public class MatrizCarpetas {
     public void enlazarContenido(String fil, String col, NodoMatriz contenido) {
         NodoMatriz temporalC = this.columnas;
         NodoMatriz temporalF = this.filas;
-        //enlazar columnas
-        if (temporalC != null) {
-            while ((temporalC != null) && (temporalC.siguiente != null) && (!(temporalC.getColumna()).equals(col))) {
-                //while ((temporalC != null) && (temporalC.siguiente != null) && (temporalC.getColumna() != col))
-                temporalC = temporalC.siguiente;
+        boolean bandera = false;
+        boolean bandera2 = false;
+        System.out.println(compararCadena("/", "documents"));
+        ///-------------------------------------------------
+        while (temporalC != null) {
+            if (temporalC.getColumna().equals(col)) {
+                bandera = true;
+                break;
             }
-            if (temporalC.abajo != null) {
-                NodoMatriz tempCB = temporalC.abajo;
-                while ((tempCB != null) && (tempCB.abajo != null) && (!(tempCB.getFila()).equals(fil))) {
-                    //while ((tempCB != null) && (tempCB.abajo != null) && (tempCB.getFila() != fil))
-                    tempCB = tempCB.abajo;
-                }
-                if (tempCB.abajo != null) {
-                    NodoMatriz tempSig = tempCB.abajo;
-                    contenido.arriba = tempCB;
-                    contenido.abajo = tempSig;
-                    tempSig.arriba = contenido;
-                    tempCB.abajo = contenido;
-                } else {
-                    //System.out.println("R");
-                    tempCB.abajo = contenido;
-                    contenido.arriba = tempCB;
-                }
+            temporalC = temporalC.getSiguiente();
+        }
+        if (bandera == true) {
+            System.out.println("se insertara" + fil);
+            if (temporalC.getAbajo() == null) {
+                contenido.setArriba(temporalC);
+                temporalC.setAbajo(contenido);
             } else {
-                //System.out.println("F");
-                temporalC.abajo = contenido;
-                contenido.arriba = temporalC;
+                while ((temporalC!=null)&&(temporalC.abajo != null) && (compararCadena(temporalC.abajo.columna, col) <= 0)) {
+                    temporalC = temporalC.abajo;
+                }
+                if (compararCadena(temporalC.getColumna(), fil) == -1) {
+                    if (temporalC.getAbajo() == null) {
+                        temporalC.setAbajo(contenido);
+                        contenido.setArriba(temporalC);
+                    } else {
+                        NodoMatriz abajo = temporalC.getAbajo();
+                        contenido.setArriba(temporalC);
+                        contenido.setAbajo(abajo);
+                        abajo.setArriba(contenido);
+                        temporalC.setAbajo(contenido);
+                    }
+                } else if (compararCadena(temporalC.getColumna(), fil) == 1) {
+                    System.out.println(temporalC.arriba.getNombre());
+                    contenido.arriba = temporalC.arriba;
+                    contenido.abajo = temporalC;
+                    temporalC.arriba.abajo = contenido;
+                    temporalC.arriba = contenido;
+                }
+
             }
         }
-        //enlazar filas
-        if (temporalF != null) {
-            while ((temporalF != null) && (temporalF.abajo != null) && (!(temporalF.getFila()).equals(fil))) {
-                //while ((temporalF != null) && (temporalF.abajo != null) && (temporalF.getFila() != fil))
-                temporalF = temporalF.abajo;
-            }
-            if (temporalF.siguiente != null) {
-                NodoMatriz tempCF = temporalF.siguiente;
-                while ((temporalF != null) && (temporalF.siguiente != null) && (!(temporalF.getColumna()).equals(col))) {
-                    //while ((tempCF!=null)&&(tempCF.siguiente!=null)&&(tempCF.getColumna()!=col))
-                    temporalF = temporalF.siguiente;
-                }
-                if (temporalF.siguiente != null) {
-                    NodoMatriz tempSigF = temporalF.siguiente;
-                    
-                    contenido.siguiente = tempSigF;
-                    contenido.anterior = temporalF;
-                    tempSigF.anterior = contenido;
-                    temporalF.siguiente = contenido;
-                } else {
-                    temporalF.siguiente = contenido;
-                    contenido.anterior = tempCF;
-                }
-            } else {
-                //System.out.println("L");
-                temporalF.siguiente = contenido;
-                contenido.anterior = temporalF;
-            }
-        }
+
+        //-------------------------------------------------
     }
 
     public void mostrar() {
@@ -176,7 +150,7 @@ public class MatrizCarpetas {
                 //System.out.println(temp.getColumna());
                 while (tempInt != null) {
                     System.out.println(" F: " + tempInt.getFila() + " C: " + tempInt.getColumna() + " Nom: " + tempInt.getNombre());
-                   
+
                     tempInt = tempInt.abajo;
                 }
                 temp = temp.siguiente;
@@ -204,15 +178,14 @@ public class MatrizCarpetas {
                     tempInt = tempInt.siguiente;
                 }*/
                 t = temp.getSiguiente();
-                if (t!=null) {
+                if (t != null) {
                     System.out.println(t.getNombre());
                     k = t.getAbajo();
-                    if (k!=null) {
-                    System.out.println("abajo" + k.getNombre());
+                    if (k != null) {
+                        System.out.println("abajo" + k.getNombre());
+                    }
                 }
-                }
-                
-                
+
                 temp = temp.abajo;
             }
         } else {
@@ -242,12 +215,12 @@ public class MatrizCarpetas {
             w.write("Matriz[width = 0.3 group = \"Mt0\",  style=filled,shape=\"circle\",fillcolor=\"yellow:blue\" label=\" \"];\n");
             //obtener valores de pila
             //w.write(listarBitacora());
-            //w.write(crearNodosFilaGuia());
-            //w.write(crearNodosColumnaGuia());
+            w.write(crearNodosFilaGuia());
+            w.write(crearNodosColumnaGuia());
             w.write(nodosContenidoFila());
-            /*w.write(rankSame());
+            w.write(rankSame());
             w.write(enlazarColumnaConNodo());
-            w.write(enlazarNodosMediosColumna());*/
+            w.write(enlazarNodosMediosColumna());
             w.write("\n");
             w.write("}");
             wr.close();
@@ -391,7 +364,7 @@ public class MatrizCarpetas {
                 }
                 cad += "[label=\"";
                 cad += tempF.getSiguiente().getNombre() + "\"";
-                
+
                 cad += "width = 1.0 style = filled,shape=\"rectangle\", fillcolor = \"yellow\", group =";
                 if (quitarEspacios(tempF.getSiguiente().getColumna()).equals("/")) {
                     cad += "CP1];";
@@ -401,7 +374,7 @@ public class MatrizCarpetas {
             }
             tempF = tempF.abajo;
         }
-/*
+
         while (enlace != null) {
             if (enlace.getSiguiente() != null) {
                 if (quitarEspacios(enlace.getFila()).equals("/")) {
@@ -431,7 +404,7 @@ public class MatrizCarpetas {
         enlace = this.filas;
         while (enlace != null) {
             primero = enlace.getSiguiente();
-            if (primero!= null) {
+            if (primero != null) {
                 primero = primero.getSiguiente();
                 while (primero != null) {
                     if (quitarEspacios(primero.getFila()).equals("/")) {
@@ -495,7 +468,8 @@ public class MatrizCarpetas {
                 }
             }
             enlace = enlace.getAbajo();
-        }*/
+
+        }
         return cad;
     }
 
@@ -575,12 +549,12 @@ public class MatrizCarpetas {
                 while (primero != null) {
                     if (primero.getAbajo() != null) {
                         if (!(primero.getFila().equals(" "))) {
-                                cad += quitarEspacios(primero.getFila());
-                                cad += quitarEspacios(primero.getColumna());
+                            cad += quitarEspacios(primero.getFila());
+                            cad += quitarEspacios(primero.getColumna());
                             cad += "->";
-                                cad += quitarEspacios(primero.getAbajo().getFila());
-                          
-                                cad +=quitarEspacios( primero.getAbajo().getColumna());
+                            cad += quitarEspacios(primero.getAbajo().getFila());
+
+                            cad += quitarEspacios(primero.getAbajo().getColumna());
                             cad += "\n";
                             cad += "[dir=both];\n";
                         }
