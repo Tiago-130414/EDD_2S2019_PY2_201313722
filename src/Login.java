@@ -126,6 +126,7 @@ public class Login extends javax.swing.JFrame {
             Principal ventanaP  = new Principal();
             ventanaP.setVisible(true);
             ventanaP.actualizarUsuario(usuario);
+            b.insertarBitacora("Inicio Sesion",usuario);
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(null,"Error usuario no existe o contraseña invalida");
@@ -192,7 +193,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
      public static HashTable usuarios = new HashTable();
-     Bitacora b = new Bitacora();
+     public static Bitacora b = new Bitacora();
      MatrizCarpetas h = new MatrizCarpetas();
      
      public String limpiarCad(String c){

@@ -51,6 +51,11 @@ public class Principal extends javax.swing.JFrame {
         CargaUsuarios = new javax.swing.JMenu();
         CargaA = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
+        graficaPila = new javax.swing.JMenu();
+        grafiaMatriz = new javax.swing.JMenu();
+        graficaArbolAVL = new javax.swing.JMenu();
+        graficaGrafo = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("USAC FILE DRIVE");
@@ -164,6 +169,11 @@ public class Principal extends javax.swing.JFrame {
         UsuarioEnLinea.setEnabled(false);
 
         Administrar.setText("Administrar");
+        Administrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AdministrarMouseClicked(evt);
+            }
+        });
 
         CargaUsuarios.setText("Cargar Usuarios");
         CargaUsuarios.setEnabled(false);
@@ -175,6 +185,11 @@ public class Principal extends javax.swing.JFrame {
         Administrar.add(CargaUsuarios);
 
         CargaA.setText("Cargar Archivos");
+        CargaA.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CargaAMouseClicked(evt);
+            }
+        });
         Administrar.add(CargaA);
 
         jMenu3.setText("Cerrar Sesion");
@@ -195,6 +210,27 @@ public class Principal extends javax.swing.JFrame {
         Administrar.add(jMenu3);
 
         jMenuBar1.add(Administrar);
+
+        jMenu1.setText("Reportes");
+
+        graficaPila.setText("Grafica Bitacora");
+        graficaPila.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                graficaPilaMouseClicked(evt);
+            }
+        });
+        jMenu1.add(graficaPila);
+
+        grafiaMatriz.setText("Grafica Carpetas");
+        jMenu1.add(grafiaMatriz);
+
+        graficaArbolAVL.setText("Grafica Archivos");
+        jMenu1.add(graficaArbolAVL);
+
+        graficaGrafo.setText("Grafica Grafo");
+        jMenu1.add(graficaGrafo);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -247,6 +283,8 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
         // TODO add your handling code here:
+        String Usu = UsuarioEnLinea.getText();
+        Login.b.insertarBitacora("Usuario Salio de Sistema", Usu);
         Login log = new Login();
         log.setVisible(true);
         this.dispose();
@@ -260,6 +298,18 @@ public class Principal extends javax.swing.JFrame {
             System.out.println("caiste perro");
         }
     }//GEN-LAST:event_CargaUsuariosMouseClicked
+
+    private void AdministrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AdministrarMouseClicked
+      
+    }//GEN-LAST:event_AdministrarMouseClicked
+
+    private void CargaAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CargaAMouseClicked
+        
+    }//GEN-LAST:event_CargaAMouseClicked
+
+    private void graficaPilaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_graficaPilaMouseClicked
+        Login.b.graficarBitacora();
+    }//GEN-LAST:event_graficaPilaMouseClicked
   @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
@@ -289,7 +339,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton crearCarpeta;
     private javax.swing.JButton eliminarArchivo;
     private javax.swing.JButton eliminarCarpeta;
+    private javax.swing.JMenu grafiaMatriz;
+    private javax.swing.JMenu graficaArbolAVL;
+    private javax.swing.JMenu graficaGrafo;
+    private javax.swing.JMenu graficaPila;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;

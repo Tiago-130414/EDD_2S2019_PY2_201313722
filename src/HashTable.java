@@ -55,6 +55,13 @@ public class HashTable {
         int newUbi;
         int n = 1;
         String cont = retornarHash(contra);
+        if (calcularUtilizacion(arr)) {
+            redimensionar(arr);
+            System.out.println("-----------------");
+            System.out.println("REDIMENSIONADO");
+            System.out.println("-----------------");
+
+        }
         //System.out.println(calcularUtilizacion(arr));
         if (arr[ubi].getUsuario().equals("-1")) {
             arr[ubi].setUsuario(usu);
@@ -78,13 +85,14 @@ public class HashTable {
                 n++;
             }
         }
+        /*
         if (calcularUtilizacion(arr)) {
             redimensionar(arr);
             System.out.println("-----------------");
             System.out.println("REDIMENSIONADO");
             System.out.println("-----------------");
 
-        }
+        }*/
         mostrar(usuarios);
     }
 
@@ -125,7 +133,7 @@ public class HashTable {
                 val++;
             }
         }
-        porc = (int) (arr.length * 0.50);
+        porc = (int) (arr.length * 0.75);
         if (val == porc) {
             return true;
         } else {

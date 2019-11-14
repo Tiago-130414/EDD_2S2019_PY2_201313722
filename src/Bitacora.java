@@ -64,7 +64,7 @@ public class Bitacora {
             System.out.println("Bitacora Vacia");
         } else {
             while (aux != null) {
-                cad += "Fecha: " +aux.getFecha() + "\\nHora: " + aux.getHora() + "\\nOperacion: "+aux.getOperacion() +"\\nUsuario" + aux.getUsuarioHCambio();
+                cad += "Fecha: " +aux.getFecha() + "\\nHora: " + aux.getHora() + "\\nOperacion: "+aux.getOperacion() +"\\nUsuario: " + aux.getUsuarioHCambio();
                 if(aux.siguiente!=null){
                     cad+="|\n";
                 }
@@ -142,4 +142,7 @@ public class Bitacora {
        insertarBitacora("hola4","Santi4");
        graficarBitacora();
     }
+    
+   
+    
 }

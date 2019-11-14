@@ -8,6 +8,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Administrar"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="AdministrarMouseClicked"/>
+          </Events>
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="CargaUsuarios">
               <Properties>
@@ -22,6 +25,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cargar Archivos"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="CargaAMouseClicked"/>
+              </Events>
             </Menu>
             <Menu class="javax.swing.JMenu" name="jMenu3">
               <Properties>
@@ -31,6 +37,36 @@
                 <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="jMenu3MenuSelected"/>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenu3MouseClicked"/>
               </Events>
+            </Menu>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reportes"/>
+          </Properties>
+          <SubComponents>
+            <Menu class="javax.swing.JMenu" name="graficaPila">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Grafica Bitacora"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="graficaPilaMouseClicked"/>
+              </Events>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="grafiaMatriz">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Grafica Carpetas"/>
+              </Properties>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="graficaArbolAVL">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Grafica Archivos"/>
+              </Properties>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="graficaGrafo">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Grafica Grafo"/>
+              </Properties>
             </Menu>
           </SubComponents>
         </Menu>

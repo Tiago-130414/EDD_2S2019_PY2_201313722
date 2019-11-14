@@ -1,15 +1,8 @@
-
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author santi
@@ -107,9 +100,7 @@ public class Registro extends javax.swing.JFrame {
             if (contra.length() > 7) {      
                 has = Login.usuarios.retornarHash(contra);
                 Login.usuarios.funcionHash(Login.usuarios.usuarios, usr,contra);
-                System.out.println("*****************************");
-                System.out.println(has);
-                System.out.println("******************************");
+                Login.b.insertarBitacora("Se ha registrado un usuario",usr);
                 JOptionPane.showMessageDialog(null, "Usuario Insertado Con Exito");
                 actualiza();
             } else {

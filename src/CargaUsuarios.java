@@ -158,6 +158,7 @@ public class CargaUsuarios extends javax.swing.JFrame {
         ));
         cantidadBuenos.setText(Integer.toString(Login.usuarios.tamano));
         Login.usuarios.tamano = 0;
+        Login.b.insertarBitacora("Se cargo un archivo de usuarios","Admin");
         nombreArchivo.setText("");
     }//GEN-LAST:event_btCargarActionPerformed
 
