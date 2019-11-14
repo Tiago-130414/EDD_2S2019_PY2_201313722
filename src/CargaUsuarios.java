@@ -1,4 +1,8 @@
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -6,7 +10,6 @@ import javax.swing.table.DefaultTableModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author santi
@@ -17,12 +20,12 @@ public class CargaUsuarios extends javax.swing.JFrame {
      * Creates new form CargaUsuarios
      */
     DefaultTableModel md;
-    String datos [][]={};
-    String cabecera [] ={};
-    
+    String datos[][] = {};
+    String cabecera[] = {};
+
     public CargaUsuarios() {
         initComponents();
-        md = new DefaultTableModel(datos,cabecera);
+        md = new DefaultTableModel(datos, cabecera);
         jTable2.setModel(md);
         this.setLocationRelativeTo(null);
     }
@@ -61,6 +64,7 @@ public class CargaUsuarios extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("USAC FILE DRIVE");
+        setIconImage(getIconImage());
 
         jLabel1.setText("Ingrese Nombre de Archivo");
 
@@ -129,24 +133,31 @@ public class CargaUsuarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+                getImage(ClassLoader.getSystemResource("Imagenes/logoUsac.png"));
+        return retValue;
+    }
+    
     private void btCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCargarActionPerformed
         md.setRowCount(0);
         cantidadBuenos.setText("0");
         String rutaAr = nombreArchivo.getText();
-        NodoHashTable [] usr = Login.usuarios.leerCsv(rutaAr);
+        NodoHashTable[] usr = Login.usuarios.leerCsv(rutaAr);
         String matriz[][] = new String[usr.length][2];
-        for (int i = 0; i <usr.length; i++) {
+        for (int i = 0; i < usr.length; i++) {
             matriz[i][0] = usr[i].getUsuario();
             matriz[i][1] = usr[i].getContrasena();
         }
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            matriz,
-            new String [] {
-                "Usuario", "Problema Insercion"
-            }
+                matriz,
+                new String[]{
+                    "Usuario", "Problema Insercion"
+                }
         ));
         cantidadBuenos.setText(Integer.toString(Login.usuarios.tamano));
-        Login.usuarios.tamano=0;
+        Login.usuarios.tamano = 0;
         nombreArchivo.setText("");
     }//GEN-LAST:event_btCargarActionPerformed
 
@@ -154,28 +165,11 @@ public class CargaUsuarios extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CargaUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CargaUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CargaUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CargaUsuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //com.jtattoo.plaf.noire.NoireLookAndFeel
+            UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
         }
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

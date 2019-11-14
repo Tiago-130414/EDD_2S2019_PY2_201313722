@@ -114,7 +114,7 @@ public class MatrizCarpetas {
                 contenido.setArriba(temporalC);
                 temporalC.setAbajo(contenido);
             } else {
-                while ((temporalC!=null)&&(temporalC.abajo != null) && (compararCadena(temporalC.abajo.columna, col) <= 0)) {
+                while ((temporalC != null) && (temporalC.abajo != null) && (compararCadena(temporalC.abajo.columna, col) <= 0)) {
                     temporalC = temporalC.abajo;
                 }
                 if (compararCadena(temporalC.getColumna(), fil) == -1) {
@@ -140,6 +140,43 @@ public class MatrizCarpetas {
         }
 
         //-------------------------------------------------
+        while (temporalF != null) {
+            if (temporalF.getFila().equals(fil)) {
+                bandera2 = true;
+                break;
+            }
+            temporalF = temporalF.getAbajo();
+        }
+
+        if (bandera2 == true) {
+            if (temporalF.siguiente == null) {
+                contenido.setAnterior(temporalF);
+                temporalF.setSiguiente(contenido);
+            } else {
+                while ((temporalF != null) && (temporalF.siguiente != null) && (compararCadena(temporalF.siguiente.fila, fil) <= 0)) {
+                    temporalF = temporalF.siguiente;
+                }
+                if (compararCadena(temporalF.getFila(), col) == -1) {
+                    if (temporalF.getSiguiente() == null) {
+                        temporalF.setSiguiente(contenido);
+                        contenido.setAnterior(temporalF);
+                    } else {
+                        NodoMatriz sig = temporalF.getSiguiente();
+                        contenido.setAnterior(temporalF);
+                        contenido.setSiguiente(sig);
+                        sig.setAnterior(contenido);
+                        temporalC.setSiguiente(contenido);
+                    }
+                } else if (compararCadena(temporalF.getFila(), col) == 1) {
+                    contenido.setAnterior(temporalF.anterior);
+                    contenido.setSiguiente(temporalF);
+                    temporalF.anterior.siguiente = contenido;
+                    temporalF.anterior = contenido;
+                }
+
+            }
+        }
+
     }
 
     public void mostrar() {
@@ -213,8 +250,7 @@ public class MatrizCarpetas {
             w.write("digraph matriz{\n");
             w.write("graph [ranksep=\"0.5\", nodesep=\"0.5\"];\n");
             w.write("Matriz[width = 0.3 group = \"Mt0\",  style=filled,shape=\"circle\",fillcolor=\"yellow:blue\" label=\" \"];\n");
-            //obtener valores de pila
-            //w.write(listarBitacora());
+
             w.write(crearNodosFilaGuia());
             w.write(crearNodosColumnaGuia());
             w.write(nodosContenidoFila());
@@ -273,17 +309,20 @@ public class MatrizCarpetas {
         String primC = "";
         //int cont = 0;
         if ((tempC.getColumna()).equals(" ") && (tempF.getFila()).equals(" ")) {
-
+            System.out.println("hola");
             if (tempC.getSiguiente().getColumna().equals("/")) {
                 primC = "CP";
+
             } else {
                 primC = "C" + quitarEspacios(tempC.siguiente.getColumna());
+
             }
 
             if (tempF.getAbajo().getFila().equals("/")) {
                 primF = "FP";
             } else {
                 primF = "F" + quitarEspacios(tempF.abajo.getFila());
+
             }
         }
         while (tempC != null) {
@@ -353,11 +392,13 @@ public class MatrizCarpetas {
         while (tempF != null) {
             if (tempF.siguiente != null) {
                 if (quitarEspacios(tempF.siguiente.getFila()).equals("/")) {
+                    System.out.println("usofila");
                     cad += "FP1";
                 } else {
                     cad += quitarEspacios(tempF.siguiente.getFila());
                 }
                 if (quitarEspacios(tempF.siguiente.getColumna()).equals("/")) {
+                    System.out.println("uso columna");
                     cad += "CP1";
                 } else {
                     cad += quitarEspacios(tempF.siguiente.getColumna());
@@ -438,30 +479,54 @@ public class MatrizCarpetas {
                 primero = enlace.getSiguiente();
                 while (primero != null) {
                     if (primero.siguiente != null) {
+                        if (primero.getFila().equals("/") && primero.getColumna().equals("/")) {
+                            cad += "FP1CP1";
+                        } else if (!primero.getFila().equals("/") && primero.getColumna().equals("/")) {
+                            cad += quitarEspacios(primero.getFila()) + "CP1";
+                        } else if (primero.getFila().equals("/") && !primero.getColumna().equals("/")) {
+
+                            cad += "FP1" + quitarEspacios(primero.getColumna());
+                        } else {
+                            cad += quitarEspacios(primero.getFila());
+                            cad += quitarEspacios(primero.getColumna());
+                        }
+
+                        /*
                         if (primero.getFila().equals("/")) {
-                            cad += "CP1";
+                            cad += "FP1";
                         } else {
 
                             cad += quitarEspacios(primero.getFila());
                         }
                         if (primero.getColumna().equals("/")) {
-                            cad += "FP1";
+                            cad += "CP1";
                         } else {
                             cad += quitarEspacios(primero.getColumna());
-                        }
+                        }*/
                         cad += "->";
-                        if (primero.getFila().equals("/")) {
-                            cad += "CP1";
+                        /*if (primero.getFila().equals("/")) {
+                            cad += "FP1";
                         } else {
 
                             cad += quitarEspacios(primero.getSiguiente().getFila());
                         }
                         if (primero.getColumna().equals("/")) {
-                            cad += "FP1";
+                            cad += "CP1";
                         } else {
                             cad += quitarEspacios(primero.getSiguiente().getColumna());
+                        }*/
+                        if (primero.getSiguiente().getFila().equals("/") && primero.getSiguiente().getColumna().equals("/")) {
+                            cad += "FP1CP1";
+                        } else if (!primero.getSiguiente().getFila().equals("/") && primero.getSiguiente().getColumna().equals("/")) {
+                            cad += quitarEspacios(primero.getSiguiente().getFila()) + "CP1";
+                        } else if (primero.getSiguiente().getFila().equals("/") && !primero.getSiguiente().getColumna().equals("/")) {
+                            cad += "FP1" + quitarEspacios(primero.getSiguiente().getColumna());
+                        } else {
+                            cad += quitarEspacios(primero.getSiguiente().getFila());
+                            cad += quitarEspacios(primero.getSiguiente().getColumna());
                         }
-                        cad += "[dir=both,constraint = false];\n";;
+
+                        cad += "[dir=both,constraint = false];\n";
                         cad += "\n";
                     }
                     primero = primero.getSiguiente();
@@ -549,12 +614,36 @@ public class MatrizCarpetas {
                 while (primero != null) {
                     if (primero.getAbajo() != null) {
                         if (!(primero.getFila().equals(" "))) {
-                            cad += quitarEspacios(primero.getFila());
-                            cad += quitarEspacios(primero.getColumna());
-                            cad += "->";
-                            cad += quitarEspacios(primero.getAbajo().getFila());
 
-                            cad += quitarEspacios(primero.getAbajo().getColumna());
+                            if (primero.getFila().equals("/") && primero.getColumna().equals("/")) {
+                                cad += "FP1CP1";
+                            } else if (!primero.getFila().equals("/") && primero.getColumna().equals("/")) {
+                                cad += quitarEspacios(primero.getFila()) + "CP1";
+                            } else if (primero.getFila().equals("/") && !primero.getColumna().equals("/")) {
+
+                                cad += "FP1" + quitarEspacios(primero.getColumna());
+                            } else {
+                                cad += quitarEspacios(primero.getFila());
+                                cad += quitarEspacios(primero.getColumna());
+                            }
+
+                            //cad += quitarEspacios(primero.getFila());
+                            //cad += quitarEspacios(primero.getColumna());
+                            cad += "->";
+                            //cad += quitarEspacios(primero.getAbajo().getFila());
+                            //cad += quitarEspacios(primero.getAbajo().getColumna());
+
+                            if (primero.getAbajo().getFila().equals("/") && primero.getAbajo().getColumna().equals("/")) {
+                                cad += "FP1CP1";
+                            } else if (!primero.getAbajo().getFila().equals("/") && primero.getAbajo().getColumna().equals("/")) {
+                                cad += quitarEspacios(primero.getAbajo().getFila()) + "CP1";
+                            } else if (primero.getAbajo().getFila().equals("/") && !primero.getAbajo().getColumna().equals("/")) {
+                                cad += "FP1" + quitarEspacios(primero.getAbajo().getColumna());
+                            } else {
+                                cad += quitarEspacios(primero.getAbajo().getFila());
+                                cad += quitarEspacios(primero.getAbajo().getColumna());
+                            }
+
                             cad += "\n";
                             cad += "[dir=both];\n";
                         }
@@ -575,7 +664,7 @@ public class MatrizCarpetas {
                 "-o",
                 "C:\\Graficas_Proyecto2\\Matriz.png"};
             Runtime.getRuntime().exec(cmd);
-            //Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\Matriz.png"));
+            Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\Matriz.png"));
         } catch (IOException ioe) {
             System.out.println(ioe);
         }

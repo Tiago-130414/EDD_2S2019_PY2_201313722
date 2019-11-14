@@ -122,7 +122,7 @@ public class Login extends javax.swing.JFrame {
      usuario = user.getText();
      String contrasena;
      contrasena = pass.getText();
-        if (usuarios.existeUsuario(usuario, contrasena)) {
+        if (usuarios.existeUsuario(limpiarCad(usuario),limpiarCad(contrasena))) {
             Principal ventanaP  = new Principal();
             ventanaP.setVisible(true);
             ventanaP.actualizarUsuario(usuario);
@@ -138,24 +138,27 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     h.insertarNodo("/","/","kk5","123");   
+     /*h.insertarNodo("/","/","kk5","123");   
      h.insertarNodo("home","home","kk2","123");
      h.insertarNodo("documents","documents","kk7","123");
-     //h.insertarNodo("documents","home","kk8","1234");
+     h.insertarNodo("documents","home","kk8","1234");
      h.insertarNodo("usac","usac","kk30","123");
-     h.insertarNodo("home","documents","pre","12345");
+     h.insertarNodo("/","documents","pre","12345");
      h.insertarNodo("documents","usac","cagada","12345");
      h.insertarNodo("a","a","hola","12345");
-     h.insertarNodo("/","documents","preo","12345");
+     h.insertarNodo("home","/","preo","12345");
      //h.insertarNodo("usac","documents","50","1324");
-     /*h.insertarNodo("vendor","vendor","kk4","123");
+     h.insertarNodo("vendor","vendor","kk4","123");
      h.insertarNodo("view","view","kk6","123");
      h.insertarNodo("vendor","usac","kk48","123");
      h.insertarNodo("vendor","documents","kk49","123");
      h.insertarNodo("vendor","prueba","aqui estoy","123");
-     h.insertarNodo("hola","view","gh","123");*/
+     h.insertarNodo("hola","view","gh","123");
      h.graficarBitacora();
-     h.mostrar();
+     h.mostrar();*/
+     Registro nuevoUsuarioR = new Registro();
+     nuevoUsuarioR.setVisible(true);
+     this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     @Override
@@ -190,7 +193,14 @@ public class Login extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
      public static HashTable usuarios = new HashTable();
      Bitacora b = new Bitacora();
-     
      MatrizCarpetas h = new MatrizCarpetas();
+     
+     public String limpiarCad(String c){
+         String k;
+         k = c.replace(" ","");
+         k = k.replace("\t","");
+         k = k.replace("\n","");
+         return c;
+     }
 
 }

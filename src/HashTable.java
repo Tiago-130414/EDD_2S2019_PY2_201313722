@@ -324,6 +324,7 @@ public class HashTable {
         String has = retornarHash(contrasena);
         for (int i = 0; i < usuarios.length; i++) {
             if (usuarios[i].usuario.equals(usuario) && usuarios[i].contrasena.equals(has)) {
+                System.out.println("encontre");
                 existe = true;
                 break;
             }
@@ -373,4 +374,10 @@ public class HashTable {
         }
         return us;
     }
+
+    public void registrarUsuario(String usuario,String contrasena){
+        funcionHash(this.usuarios, usuario, retornarHash(contrasena));
+    }
+
+
 }
