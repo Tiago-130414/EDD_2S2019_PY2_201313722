@@ -386,6 +386,19 @@ public class HashTable {
     public void registrarUsuario(String usuario,String contrasena){
         funcionHash(this.usuarios, usuario, retornarHash(contrasena));
     }
-
+    
+    public NodoHashTable usuarioOnline(String usu) {
+        NodoHashTable temp = new NodoHashTable("-1","-1","-1");
+        for (int i = 0; i < usuarios.length; i++) {
+            if (usuarios[i].usuario.equals(usu)) {
+                temp.usuario = usuarios[i].usuario;
+                temp.contrasena = usuarios[i].contrasena;
+                temp.matriz = usuarios[i].matriz;
+                temp.timestamp = usuarios[i].timestamp;
+                break;
+            }
+        }
+        return temp;
+    }
 
 }

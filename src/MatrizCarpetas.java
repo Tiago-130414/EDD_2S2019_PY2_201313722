@@ -5,15 +5,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 /**
  *
  * @author santi
  */
 public class MatrizCarpetas {
 
-    NodoMatriz columnas;
-    NodoMatriz filas;
+    static NodoMatriz columnas;
+    static NodoMatriz filas;
+    static int m=0;
 
     public MatrizCarpetas() {
         columnas = new NodoMatriz(" ", " ", " ", " ");
@@ -27,13 +27,11 @@ public class MatrizCarpetas {
         enlazarFilas(nuevoFil, fil);
         NodoMatriz nuevo = new NodoMatriz(fil, col, dat, fech);
         enlazarContenido(fil, col, nuevo);
-
     }
 
     public void enlazarColumnas(NodoMatriz nuevoCol, String columna) {
         NodoMatriz temporalColumnas = this.columnas;
         if (temporalColumnas == null) {
-            //System.out.println("r");
             this.columnas = nuevoCol;
         } else {
             while ((temporalColumnas != null) && (temporalColumnas.siguiente != null) && (compararCadena(temporalColumnas.siguiente.columna, columna) <= 0)) {
@@ -99,7 +97,6 @@ public class MatrizCarpetas {
         NodoMatriz temporalF = this.filas;
         boolean bandera = false;
         boolean bandera2 = false;
-        System.out.println(compararCadena("/", "documents"));
         ///-------------------------------------------------
         while (temporalC != null) {
             if (temporalC.getColumna().equals(col)) {
@@ -204,16 +201,6 @@ public class MatrizCarpetas {
         if (temp != null) {
             while (temp != null) {
                 NodoMatriz tempInt = temp.siguiente;
-                //System.out.println(temp.getColumna());
-                /*while (tempInt != null) {
-                    t = tempInt.getSiguiente();
-                    if (t!=null) {
-                        System.out.println("F: " + tempInt.getFila() + " C: " + tempInt.getColumna() + " Nom: " + tempInt.getNombre()  + "anterior: " +t.getNombre());
-                    }else{
-                        System.out.println("F: " + tempInt.getFila() + " C: " + tempInt.getColumna() + " Nom: " + tempInt.getNombre());
-                    }
-                    tempInt = tempInt.siguiente;
-                }*/
                 t = temp.getSiguiente();
                 if (t != null) {
                     System.out.println(t.getNombre());
@@ -249,8 +236,7 @@ public class MatrizCarpetas {
             PrintWriter wr = new PrintWriter(bw);
             w.write("digraph matriz{\n");
             w.write("graph [ranksep=\"0.5\", nodesep=\"0.5\"];\n");
-            w.write("Matriz[width = 0.3 group = \"Mt0\",  style=filled,shape=\"circle\",fillcolor=\"yellow:blue\" label=\" \"];\n");
-
+            w.write("Matriz[width = 0.3 group = \"Mt0\",  style=filled,shape=\"circle\",fillcolor=\"yellow:red\" label=\" \"];\n");
             w.write(crearNodosFilaGuia());
             w.write(crearNodosColumnaGuia());
             w.write(nodosContenidoFila());
@@ -278,7 +264,7 @@ public class MatrizCarpetas {
                 }
                 cad += "[label=\"";
                 cad += filaA.getFila() + "\"";
-                cad += "width = 1.0 style = filled,shape=\"rectangle\", fillcolor = \"yellow\", group = \"Mt0\"] ;\n";
+                cad += "width = 1.0 style = filled,shape=\"rectangle\", fillcolor = \"yellow:red\", group = \"Mt0\"] ;\n";
             }
             filaA = filaA.getAbajo();
         }
@@ -335,7 +321,7 @@ public class MatrizCarpetas {
                 }
                 cad += "[label=\"";
                 cad += tempC.getColumna() + "\"";
-                cad += "width = 1.0 style = filled,shape=\"rectangle\", fillcolor = \"yellow\", group =\"";
+                cad += "width = 1.0 style = filled,shape=\"rectangle\", fillcolor = \"yellow:red\", group =\"";
                 cad += quitarEspacios(tempC.getColumna()) + "\"];\n";
             }
             //cont++;
@@ -406,7 +392,7 @@ public class MatrizCarpetas {
                 cad += "[label=\"";
                 cad += tempF.getSiguiente().getNombre() + "\"";
 
-                cad += "width = 1.0 style = filled,shape=\"rectangle\", fillcolor = \"yellow\", group =";
+                cad += "width = 1.0 style = filled,shape=\"rectangle\", fillcolor = \"yellow:red\", group =";
                 if (quitarEspacios(tempF.getSiguiente().getColumna()).equals("/")) {
                     cad += "CP1];";
                 } else {
@@ -461,7 +447,7 @@ public class MatrizCarpetas {
                     }
                     cad += "[label=\"";
                     cad += primero.getNombre() + "\"";
-                    cad += "width = 1.0 style = filled,shape=\"rectangle\", fillcolor = \"yellow\", group =";
+                    cad += "width = 1.0 style = filled,shape=\"rectangle\", fillcolor = \"yellow:red\", group =";
                     if (quitarEspacios(primero.getColumna()).equals("/")) {
                         cad += "CP1];\n";
                     } else {
@@ -676,5 +662,27 @@ public class MatrizCarpetas {
         cad = cad.replace("\t", "");
         cad = cad.replace("\n", "");
         return cad;
+    }
+    
+    public NodoMatriz retornarArbol(String fil,String col){
+        NodoMatriz temp = null;
+        NodoMatriz aux = this.filas;
+            if (aux != null) {
+                while (aux != null) {
+                    NodoMatriz tempInt = aux.siguiente;
+                    while (tempInt != null) {
+                        if (tempInt.getColumna().equals(fil) && tempInt.getFila().equals(col)) {
+                            temp = tempInt;
+                            System.out.println("encontre el nodo buscado en matriz");
+                            break;
+                        }
+                        tempInt = tempInt.siguiente;
+                    }
+                    aux = aux.abajo;
+                }
+            } else {
+                System.out.println("vacio");
+            }
+        return temp;
     }
 }

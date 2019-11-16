@@ -5,7 +5,6 @@
 public class NodoArbolAVL {
 
     String nombre;
-    String extension;
     String contenido;
     String timestamp;
     int fe;
@@ -13,9 +12,8 @@ public class NodoArbolAVL {
     NodoArbolAVL derecho;
     NodoArbolAVL izquierdo;
     
-    public NodoArbolAVL(String nom,String ext,String cont,String fh) {
+    public NodoArbolAVL(String nom,String cont,String fh) {
         this.nombre = nom;
-        this.extension = ext;
         this.contenido = cont;
         this.timestamp = fh;
         this.fe = 0;
@@ -30,14 +28,6 @@ public class NodoArbolAVL {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
     }
 
     public String getContenido() {

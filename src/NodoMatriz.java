@@ -13,6 +13,7 @@ public class NodoMatriz {
     NodoMatriz anterior;
     NodoMatriz arriba;
     NodoMatriz abajo;
+    ArbolAVL_Archivos arbol = new ArbolAVL_Archivos();
 
     public NodoMatriz(String fila,String columna,String nombre, String fechaCreacion) {
         this.indiceC = 0;

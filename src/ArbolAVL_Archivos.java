@@ -1,9 +1,14 @@
+
 /**
  *
  * @author santi
  */
 import java.io.*;
 import java.awt.Desktop;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ArbolAVL_Archivos {
 
     String cad1 = "", cad2 = "";
@@ -105,8 +110,9 @@ public class ArbolAVL_Archivos {
         return nuevoPadre;
     }
 
-    public void insertarDato(String n, String e, String c, String fh) {
-        NodoArbolAVL nuevo = new NodoArbolAVL(n, e, c, fh);
+    public void insertarDato(String n, String c) {
+        String fh = timestamp();
+        NodoArbolAVL nuevo = new NodoArbolAVL(n, c, fh);
         if (raiz == null) {
             raiz = nuevo;
         } else {
@@ -208,7 +214,7 @@ public class ArbolAVL_Archivos {
         }
         System.out.println(actual.nombre);
         return actual;
-        
+
     }
 
     public void inOrden(NodoArbolAVL r) {
@@ -244,13 +250,16 @@ public class ArbolAVL_Archivos {
         return sum;
     }
 
-    public String listarNodos(NodoArbolAVL raiz) {
+    public String listarNodos(NodoArbolAVL raiz, String usuario) {
         if (raiz == null) {
             return cad1;
         } else {
-            listarNodos(raiz.izquierdo);
-            cad1 += "\tNodo" + raiz.nombre + "[label=\"<izquierda>|" + raiz.nombre + Integer.toString(raiz.altura) + "|<derecha>\"];\n";
-            listarNodos(raiz.derecho);
+            listarNodos(raiz.izquierdo, usuario);
+            cad1 += "\t\"Nodo" + raiz.nombre + "\"[label=\"<izquierda>|" + "Nombre: " + raiz.nombre
+                    + "\\n Contenido:" + raiz.contenido + "\\nFE: " + Integer.toString(raiz.fe)
+                    + "\\nAltura: " + Integer.toString(raiz.altura)
+                    + "\\nTimeStamp: " + raiz.timestamp + "\\nPropietario: " + usuario + "|<derecha>\"];\n";
+            listarNodos(raiz.derecho, usuario);
         }
         return cad1;
     }
@@ -261,20 +270,21 @@ public class ArbolAVL_Archivos {
         } else {
             apuntarNodos(raiz.izquierdo);
             if (raiz.izquierdo != null) {
-                cad2 += "\tNodo" + raiz.nombre + ":izquierda->Nodo" + raiz.izquierdo.nombre + ";\n";
+                cad2 += "\t\"Nodo" + raiz.nombre + "\":izquierda->\"Nodo" + raiz.izquierdo.nombre + "\";\n";
             }
 
             if (raiz.derecho != null) {
-                cad2 += "\tNodo" + raiz.nombre + ":derecha->Nodo" + raiz.derecho.nombre + ";\n";
+                cad2 += "\t\"Nodo" + raiz.nombre + "\":derecha->\"Nodo" + raiz.derecho.nombre + "\";\n";
             }
             apuntarNodos(raiz.derecho);
         }
         return cad2;
     }
 
-    public void graficar() {
+    public void graficar(String dat, String usuario) {
+        String ar = "C:\\Graficas_Proyecto2\\ArbolAVL_" + dat + ".dot";
         File f;
-        f = new File("C:\\Graficas_Proyecto2\\ArbolAVL.dot");
+        f = new File(ar.toString());
         try {
             FileWriter w = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(w);
@@ -288,7 +298,8 @@ public class ArbolAVL_Archivos {
             w.write("\tcolor=lightgrey;\n");
             w.write("\tlabelloc=t;\n");
             w.write("\tnode [shape = record, style=\"rounded,filled\", fillcolor=\"orange:red\",width=0.7,height=0.5];\n");
-            w.write(listarNodos(raiz));
+            actualizarFE(raiz);
+            w.write(listarNodos(raiz, usuario));
             w.write(apuntarNodos(raiz));
             w.write("\tlabel=\"Arbol AVL\";\n");
             w.write("\t}\n");
@@ -297,20 +308,85 @@ public class ArbolAVL_Archivos {
             bw.close();
         } catch (IOException e) {
         }
-        ejecutar();
+        cad1="";
+        cad2="";
+        ejecutar(dat);
     }
 
-    public void ejecutar() {
+    public void ejecutar(String dif) {
+        String dot = "C:/Graficas_Proyecto2/ArbolAVL_" + dif + ".dot";
+        String nomImg = "C:/Graficas_Proyecto2/ArbolAVL_" + dif + ".png";
         try {
-            String[] cmd = {"C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe",
+            String[] cmd = {"C:/Program Files (x86)/Graphviz2.38/bin/dot.exe",
                 "-Tpng",
-                "C:\\Graficas_Proyecto2\\ArbolAVL.dot",
+                dot,
                 "-o",
-                "C:\\Graficas_Proyecto2\\ArbolAVL.png"};
+                nomImg};
             Runtime.getRuntime().exec(cmd);
-            Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\ArbolAVL.png"));
+            abrirImg("C:/Graficas_Proyecto2/ArbolAVL_" + dif + ".png");
         } catch (IOException ioe) {
             System.out.println(ioe);
+        }
+    }
+
+    public void abrirImg(String archivo) {
+        try {
+
+            File objetofile = new File(archivo);
+            Desktop.getDesktop().open(objetofile);
+
+        } catch (IOException ex) {
+
+            System.out.println(ex);
+
+        }
+    }
+
+    public void leerCsv(String nombreAr) {
+        String csvFile = nombreAr.toString();
+        BufferedReader br = null;
+        String line;
+        //int cont = 0;
+        String separador = ",";
+        try {
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+                String[] datos = line.split(separador);
+                if (!datos[0].equals("Archivo") && !datos[1].equals("Contenido")) {
+                    insertarDato(datos[0], datos[1]);
+                }
+
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error al leer archivo: " + e);
+        } catch (IOException e) {
+            System.out.println("Exception" + e);
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    System.out.println("Error al terminar lectura" + e);
+                }
+            }
+        }
+    }
+
+    public String timestamp() {
+        String tmstamp;
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        tmstamp = hourdateFormat.format(date);
+        return tmstamp;
+    }
+
+    public void actualizarFE(NodoArbolAVL raiz) {
+        int fe = 0;
+        if (raiz != null) {
+            inOrden(raiz.izquierdo);
+            fe = getBalance(raiz);
+            raiz.setFe(fe);
+            inOrden(raiz.derecho);
         }
     }
 }

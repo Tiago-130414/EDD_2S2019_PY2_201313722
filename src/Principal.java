@@ -1,27 +1,87 @@
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.net.URL;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author santi
  */
 public class Principal extends javax.swing.JFrame {
 
+    NodoArbolAVL arbolTemp;
+    NodoMatriz aux;
+
     /**
      * Creates new form Principal
      */
+    private void propiedadesTabla() {
+        tablaArchivos.setDefaultRenderer(Object.class, new imgTabla());
+        String titulos[] = {" ", "Nombre"};
+        DefaultTableModel tm = new DefaultTableModel(null, titulos);
+        if (Login.temp != null) {
+            NodoMatriz aux = Login.temp.matriz.filas;
+            if (aux != null) {
+                while (aux != null) {
+                    NodoMatriz tempInt = aux.siguiente;
+                    /*if (verificarSlash(aux.columna) && !aux.getColumna().equals(" ")) {
+                    tm.addRow(new Object[]{labelCarpeta, aux.getColumna()});
+                    }*/
+                    while (tempInt != null) {
+                        if (verificarSlash(aux.fila) && !aux.getFila().equals(" ")) {
+                            tm.addRow(new Object[]{labelCarpeta, "Raiz"});
+                        } else if (!aux.getFila().equals(" ")) {
+                            tm.addRow(new Object[]{labelCarpeta2, aux.getFila()});
+                        }
+                        tempInt = tempInt.siguiente;
+                    }
+                    aux = aux.abajo;
+                }
+            } else {
+                System.out.println("vacio");
+            }
+        }
+        tablaArchivos.setRowHeight(130);
+        tablaArchivos.setModel(tm);
+    }
+
+    /*LABEL PARA CARPETAS*/
+    //tm.addRow(new Object[]{labelCarpeta, "Raiz2"});
+    String path3 = "/Imagenes/carpetaR.png";
+    URL url3 = this.getClass().getResource(path3);
+    ImageIcon icon3 = new ImageIcon(url3);
+    JLabel labelCarpeta = new JLabel(icon3);
+
+    /*LABEL PARA CARPETAS*/
+    //tm.addRow(new Object[]{labelCarpeta, "Raiz2"});
+    String path = "/Imagenes/carpeta.png";
+    URL url = this.getClass().getResource(path);
+    ImageIcon icon = new ImageIcon(url);
+    JLabel labelCarpeta2 = new JLabel(icon);
+
+    /*LABEL PARA ARCHIVOS*/
+    //tm.addRow(new Object[]{labelArchivo, "Raiz"});
+    String path2 = "/Imagenes/archivo.png";
+    URL url2 = this.getClass().getResource(path2);
+    ImageIcon icon2 = new ImageIcon(url2);
+    JLabel labelArchivo = new JLabel(icon2);
+
     public Principal() {
         initComponents();
+        propiedadesTabla();
         this.setLocationRelativeTo(null);
+
     }
 
     /**
@@ -35,10 +95,11 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         crearCarpeta = new javax.swing.JButton();
-        modificarCarpeta = new javax.swing.JButton();
-        eliminarCarpeta = new javax.swing.JButton();
-        subirCarpeta = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        entrarCarpeta = new javax.swing.JButton();
+        regresarCarpeta = new javax.swing.JButton();
+        panelArchivos = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaArchivos = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         crearArchivo = new javax.swing.JButton();
         modificarArchivo = new javax.swing.JButton();
@@ -68,20 +129,32 @@ public class Principal extends javax.swing.JFrame {
 
         crearCarpeta.setText("Crear");
         crearCarpeta.setFocusable(false);
+        crearCarpeta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                crearCarpetaMouseClicked(evt);
+            }
+        });
         crearCarpeta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 crearCarpetaActionPerformed(evt);
             }
         });
 
-        modificarCarpeta.setText("Modificar");
-        modificarCarpeta.setFocusable(false);
+        entrarCarpeta.setText("Entrar");
+        entrarCarpeta.setFocusable(false);
+        entrarCarpeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                entrarCarpetaActionPerformed(evt);
+            }
+        });
 
-        eliminarCarpeta.setText("Eliminar");
-        eliminarCarpeta.setFocusable(false);
-
-        subirCarpeta.setText("Subir");
-        subirCarpeta.setFocusable(false);
+        regresarCarpeta.setText("Subir");
+        regresarCarpeta.setFocusable(false);
+        regresarCarpeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                regresarCarpetaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -90,9 +163,8 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(modificarCarpeta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(eliminarCarpeta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(subirCarpeta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(entrarCarpeta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(regresarCarpeta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(crearCarpeta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -101,38 +173,61 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(crearCarpeta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(modificarCarpeta)
+                .addComponent(entrarCarpeta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(eliminarCarpeta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(subirCarpeta)
-                .addGap(0, 19, Short.MAX_VALUE))
+                .addComponent(regresarCarpeta)
+                .addGap(0, 49, Short.MAX_VALUE))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Archivos"));
-        jPanel2.setFocusable(false);
+        panelArchivos.setBorder(javax.swing.BorderFactory.createTitledBorder("Archivos"));
+        panelArchivos.setFocusable(false);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 405, Short.MAX_VALUE)
+        tablaArchivos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "", "Nombre"
+            }
+        ));
+        tablaArchivos.setEnabled(false);
+        jScrollPane1.setViewportView(tablaArchivos);
+
+        javax.swing.GroupLayout panelArchivosLayout = new javax.swing.GroupLayout(panelArchivos);
+        panelArchivos.setLayout(panelArchivosLayout);
+        panelArchivosLayout.setHorizontalGroup(
+            panelArchivosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelArchivosLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        panelArchivosLayout.setVerticalGroup(
+            panelArchivosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelArchivosLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Archivos"));
 
         crearArchivo.setText("Crear");
         crearArchivo.setFocusable(false);
+        crearArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crearArchivoActionPerformed(evt);
+            }
+        });
 
         modificarArchivo.setText("Modificar");
         modificarArchivo.setFocusable(false);
 
         eliminarArchivo.setText("Eliminar");
         eliminarArchivo.setFocusable(false);
+        eliminarArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarArchivoActionPerformed(evt);
+            }
+        });
 
         subirArchivo.setText("Subir");
         subirArchivo.setFocusable(false);
@@ -212,6 +307,11 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1.add(Administrar);
 
         jMenu1.setText("Reportes");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
 
         graficaPila.setText("Grafica Bitacora");
         graficaPila.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -222,9 +322,19 @@ public class Principal extends javax.swing.JFrame {
         jMenu1.add(graficaPila);
 
         grafiaMatriz.setText("Grafica Carpetas");
+        grafiaMatriz.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                grafiaMatrizMouseClicked(evt);
+            }
+        });
         jMenu1.add(grafiaMatriz);
 
         graficaArbolAVL.setText("Grafica Archivos");
+        graficaArbolAVL.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                graficaArbolAVLMouseClicked(evt);
+            }
+        });
         jMenu1.add(graficaArbolAVL);
 
         graficaGrafo.setText("Grafica Grafo");
@@ -246,7 +356,7 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(panelArchivos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
@@ -262,7 +372,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(UsuarioEnLinea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelArchivos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -274,11 +384,11 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void crearCarpetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearCarpetaActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_crearCarpetaActionPerformed
 
     private void jMenu3MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenu3MenuSelected
-        
+
     }//GEN-LAST:event_jMenu3MenuSelected
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
@@ -294,37 +404,132 @@ public class Principal extends javax.swing.JFrame {
         if (CargaUsuarios.isEnabled()) {
             CargaUsuarios cargar = new CargaUsuarios();
             cargar.setVisible(true);
-        }else{
+        } else {
             System.out.println("caiste perro");
         }
     }//GEN-LAST:event_CargaUsuariosMouseClicked
 
     private void AdministrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AdministrarMouseClicked
-      
+
     }//GEN-LAST:event_AdministrarMouseClicked
 
     private void CargaAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CargaAMouseClicked
-        
+
     }//GEN-LAST:event_CargaAMouseClicked
 
     private void graficaPilaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_graficaPilaMouseClicked
         Login.b.graficarBitacora();
     }//GEN-LAST:event_graficaPilaMouseClicked
-  @Override
+
+    private void crearCarpetaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crearCarpetaMouseClicked
+        String carpetaPadre;
+        String carpetaHijo;
+        String nomb;
+        carpetaPadre = JOptionPane.showInputDialog("Ingrese la carpeta padre: ");
+        carpetaHijo = JOptionPane.showInputDialog("Ingrese la carpeta hijo: ");
+        if (carpetaPadre != null && carpetaHijo != null) {
+            if (carpetaPadre.equals("/") || carpetaHijo.equals("/")) {
+                nomb = "Raiz" + "/" + carpetaHijo;
+            } else {
+
+                nomb = carpetaPadre + "/" + carpetaHijo;
+            }
+            if (Login.temp != null) {
+                Login.temp.matriz.insertarNodo(carpetaPadre, carpetaHijo, nomb, "horaFecha");
+            }
+            propiedadesTabla();
+        }
+    }//GEN-LAST:event_crearCarpetaMouseClicked
+
+    private void grafiaMatrizMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grafiaMatrizMouseClicked
+        if (Login.temp != null) {
+            Login.temp.matriz.graficarBitacora();
+        }
+    }//GEN-LAST:event_grafiaMatrizMouseClicked
+
+    private void entrarCarpetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarCarpetaActionPerformed
+        String fil = JOptionPane.showInputDialog("Ingrese Carpeta Padre: ");
+        String col = JOptionPane.showInputDialog("Ingrese Carpeta Hijo: ");
+        aux = Login.temp.matriz.retornarArbol(fil, col);
+        if (aux != null) {
+            panelArchivos.setBorder(javax.swing.BorderFactory.createTitledBorder(aux.nombre));
+        }
+        tablaArchivos.setDefaultRenderer(Object.class, new imgTabla());
+        String titulos[] = {" ", "Nombre", "Contenido"};
+        DefaultTableModel tm = new DefaultTableModel(null, titulos);
+        if (aux != null) {
+            propiedadesArbol(aux.arbol.raiz, tm);
+            System.out.println("si lo hice xd");
+        }
+        tablaArchivos.setRowHeight(130);
+        tablaArchivos.setModel(tm);
+    }//GEN-LAST:event_entrarCarpetaActionPerformed
+
+    private void crearArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearArchivoActionPerformed
+        String nombreArchivo = JOptionPane.showInputDialog("Ingrese el nombre de archivo: ");
+        String contenidoArchivo = JOptionPane.showInputDialog("Ingrese el contenido del archivo");
+        tablaArchivos.setDefaultRenderer(Object.class, new imgTabla());
+        String titulos[] = {" ", "Nombre", "Contenido"};
+        DefaultTableModel tm = new DefaultTableModel(null, titulos);
+        if (nombreArchivo != null && contenidoArchivo != null) {
+            if (aux != null) {
+                aux.arbol.insertarDato(nombreArchivo, contenidoArchivo);
+                propiedadesArbol(aux.arbol.raiz, tm);
+                System.out.println("si lo hice xd");
+            }
+        }
+        tablaArchivos.setRowHeight(130);
+        tablaArchivos.setModel(tm);
+    }//GEN-LAST:event_crearArchivoActionPerformed
+
+    private void graficaArbolAVLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_graficaArbolAVLMouseClicked
+        if (aux != null) {
+            aux.arbol.graficar(UsuarioEnLinea.getText(), UsuarioEnLinea.getText());
+        }
+    }//GEN-LAST:event_graficaArbolAVLMouseClicked
+
+    private void regresarCarpetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarCarpetaActionPerformed
+        propiedadesTabla();
+    }//GEN-LAST:event_regresarCarpetaActionPerformed
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void eliminarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarArchivoActionPerformed
+        String eliminar = JOptionPane.showInputDialog("Ingrese nombre de archivo a eliminar: ");
+
+        tablaArchivos.setDefaultRenderer(Object.class, new imgTabla());
+        String titulos[] = {" ", "Nombre", "Contenido"};
+        DefaultTableModel tm = new DefaultTableModel(null, titulos);
+        if (aux != null) {
+            if (eliminar != null) {
+                aux.arbol.eliminar(eliminar);
+                propiedadesArbol(aux.arbol.raiz, tm);
+                System.out.println("elimine");
+            }
+        }
+        tablaArchivos.setRowHeight(130);
+        tablaArchivos.setModel(tm);
+
+
+    }//GEN-LAST:event_eliminarArchivoActionPerformed
+    @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
                 getImage(ClassLoader.getSystemResource("Imagenes/logoUsac.png"));
         return retValue;
     }
+
     public static void main(String args[]) {
-       
+
         try {
             //com.jtattoo.plaf.noire.NoireLookAndFeel
             UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
         }
         /* Create and display the form */
-        
+
         java.awt.EventQueue.invokeLater(() -> {
             new Principal().setVisible(true);
         });
@@ -338,7 +543,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton crearArchivo;
     private javax.swing.JButton crearCarpeta;
     private javax.swing.JButton eliminarArchivo;
-    private javax.swing.JButton eliminarCarpeta;
+    private javax.swing.JButton entrarCarpeta;
     private javax.swing.JMenu grafiaMatriz;
     private javax.swing.JMenu graficaArbolAVL;
     private javax.swing.JMenu graficaGrafo;
@@ -348,24 +553,45 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton modificarArchivo;
-    private javax.swing.JButton modificarCarpeta;
+    private javax.swing.JPanel panelArchivos;
+    private javax.swing.JButton regresarCarpeta;
     private javax.swing.JButton subirArchivo;
-    private javax.swing.JButton subirCarpeta;
+    private javax.swing.JTable tablaArchivos;
     // End of variables declaration//GEN-END:variables
 
-    public void actualizarUsuario(String Usuario){
+    public void actualizarUsuario(String Usuario) {
         UsuarioEnLinea.setText(Usuario);
         activarCargaUsuarios(Usuario);
     }
-    public void activarCargaUsuarios(String usuario){
+
+    public void activarCargaUsuarios(String usuario) {
         if (usuario.equals("Admin")) {
             CargaUsuarios.setEnabled(true);
-            
         }
     }
 
+    public boolean verificarSlash(String cad) {
+        return cad.equals("/");
+    }
 
+    private void propiedadesArbol(NodoArbolAVL raiz, DefaultTableModel tm) {
+        if (raiz != null) {
+            propiedadesArbol(raiz.izquierdo, tm);
+            tm.addRow(new Object[]{labelArchivo, raiz.nombre, raiz.contenido});
+            propiedadesArbol(raiz.derecho, tm);
+        }
+    }
+
+    /*
+        public void inOrden(NodoArbolAVL r) {
+            if (r != null) {
+                inOrden(r.izquierdo);
+                System.out.println(r.nombre + "\taltura" + r.altura + "\tfe" + r.fe);
+                inOrden(r.derecho);
+            }
+        }
+     */
 }

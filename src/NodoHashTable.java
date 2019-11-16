@@ -6,13 +6,12 @@ public class NodoHashTable {
     String usuario;
     String contrasena;
     String timestamp;
-
+    MatrizCarpetas matriz = new MatrizCarpetas();
 
     public NodoHashTable(String usuario, String contrasena, String timestamp) {
         this.usuario = usuario;
         this.contrasena = contrasena;
         this.timestamp = timestamp;
-
     }
 
     public String getUsuario() {

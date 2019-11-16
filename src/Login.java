@@ -112,34 +112,28 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-       //usuarios.ingresarVal();
-      // b.inserar();
-     System.out.println("------------------------------------------");
-     //h.mostrarF();
-     //usuarios.graficar(usuarios.usuarios);
-     String usuario;
-     usuario = user.getText();
-     String contrasena;
-     contrasena = pass.getText();
-        if (usuarios.existeUsuario(limpiarCad(usuario),limpiarCad(contrasena))) {
-            Principal ventanaP  = new Principal();
+        System.out.println("------------------------------------------");
+        String usuario;
+        usuario = user.getText();
+        String contrasena;
+        contrasena = pass.getText();
+        if (usuarios.existeUsuario(limpiarCad(usuario), limpiarCad(contrasena))) {
+            Principal ventanaP = new Principal();
             ventanaP.setVisible(true);
             ventanaP.actualizarUsuario(usuario);
-            b.insertarBitacora("Inicio Sesion",usuario);
+            temp = usuarios.usuarioOnline(usuario);
+            cargarRaiz();
+            b.insertarBitacora("Inicio Sesion", usuario);
             this.dispose();
-        }else{
-            JOptionPane.showMessageDialog(null,"Error usuario no existe o contraseña invalida");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error usuario no existe o contraseña invalida");
             user.setText("");
             pass.setText("");
         }
-            
-     
-       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     /*h.insertarNodo("/","/","kk5","123");   
+   /*h.insertarNodo("/","/","kk5","123");   
      h.insertarNodo("home","home","kk2","123");
      h.insertarNodo("documents","documents","kk7","123");
      h.insertarNodo("documents","home","kk8","1234");
@@ -157,9 +151,9 @@ public class Login extends javax.swing.JFrame {
      h.insertarNodo("hola","view","gh","123");
      h.graficarBitacora();
      h.mostrar();*/
-     Registro nuevoUsuarioR = new Registro();
-     nuevoUsuarioR.setVisible(true);
-     this.dispose();
+        Registro nuevoUsuarioR = new Registro();
+        nuevoUsuarioR.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     @Override
@@ -168,8 +162,7 @@ public class Login extends javax.swing.JFrame {
                 getImage(ClassLoader.getSystemResource("Imagenes/logoUsac.png"));
         return retValue;
     }
-    
-    
+
     public static void main(String args[]) {
         try {
             //com.jtattoo.plaf.noire.NoireLookAndFeel
@@ -192,16 +185,26 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPasswordField pass;
     private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
-     public static HashTable usuarios = new HashTable();
-     public static Bitacora b = new Bitacora();
-     MatrizCarpetas h = new MatrizCarpetas();
-     
-     public String limpiarCad(String c){
-         String k;
-         k = c.replace(" ","");
-         k = k.replace("\t","");
-         k = k.replace("\n","");
-         return c;
-     }
+    public static HashTable usuarios = new HashTable();
+    public static NodoHashTable temp;
+    public static Bitacora b = new Bitacora();
+    MatrizCarpetas h = new MatrizCarpetas();
+
+    public String limpiarCad(String c) {
+        String k;
+        k = c.replace(" ", "");
+        k = k.replace("\t", "");
+        k = k.replace("\n", "");
+        return c;
+    }
+
+    public void cargarRaiz() {
+        if (Login.temp != null) {
+            Login.temp.matriz.insertarNodo("/", "/", "datos", "123456");
+            Login.temp.matriz.graficarBitacora();
+        } else {
+            System.out.println("paque");
+        }
+    }
 
 }
