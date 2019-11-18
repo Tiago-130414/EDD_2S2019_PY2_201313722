@@ -1,4 +1,5 @@
 
+
 import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -32,12 +33,14 @@ public class HashTable {
         //inicializo el vector
         for (int i = 0; i < usuarios.length; i++) {
             usuarios[i] = new NodoHashTable("-1", "-1", "-1");
+            usuarios[i].matriz = new MatrizCarpetas();
         }
         funcionHash(usuarios, "Admin", "Admin");
 
         us = new NodoHashTable[1000];
         for (int i = 0; i < us.length; i++) {
             us[i] = new NodoHashTable(" ", " ", " ");
+            us[i].matriz = new MatrizCarpetas();
         }
     }
 
@@ -60,6 +63,7 @@ public class HashTable {
             System.out.println("-----------------");
             System.out.println("REDIMENSIONADO");
             System.out.println("-----------------");
+            mostrar(usuarios);
 
         }
         //System.out.println(calcularUtilizacion(arr));
@@ -67,6 +71,7 @@ public class HashTable {
             arr[ubi].setUsuario(usu);
             arr[ubi].setContrasena(cont);
             arr[ubi].setTimestamp(timestamp());
+
             
         } else {
             while (true) {
@@ -75,8 +80,8 @@ public class HashTable {
                     if (arr[newUbi].getUsuario().equals("-1")) {
                         arr[newUbi].setUsuario(usu);
                         arr[newUbi].setContrasena(cont);
-                        arr[newUbi].setTimestamp(timestamp());
-                       
+                        arr[newUbi].setTimestamp(timestamp());  
+
                         break;
                     }
                 } else {
@@ -93,7 +98,6 @@ public class HashTable {
             System.out.println("-----------------");
 
         }*/
-        mostrar(usuarios);
     }
 
     public int hashDivision(String cad, int tamArr) {
@@ -129,11 +133,11 @@ public class HashTable {
         int val = 0;
         int porc;
         for (int i = 0; i < arr.length; i++) {
-            if (arr[i].getUsuario() != "-1") {
+            if (!arr[i].getUsuario().equals("-1")) {
                 val++;
             }
         }
-        porc = (int) (arr.length * 0.75);
+        porc = (int) (arr.length * 0.50);
         if (val == porc) {
             return true;
         } else {
@@ -152,13 +156,13 @@ public class HashTable {
             usuarios[i] = new NodoHashTable("-1", "-1", "-1");
         }
         for (int i = 0; i < temp.length; i++) {
-            if (temp[i].getUsuario() != "-1") {
-                insertarDatosRedimension(usuarios, temp[i].getUsuario(), temp[i].getContrasena(), temp[i].getTimestamp());
+            if (!temp[i].getUsuario().equals("-1")) {
+                insertarDatosRedimension(this.usuarios, temp[i].getUsuario(), temp[i].getContrasena(), temp[i].getTimestamp(),temp[i].getMatrizCarpetas());
             }
         }
     }
 
-    public void insertarDatosRedimension(NodoHashTable[] arr, String usu, String contra, String tmstmp) {
+    public void insertarDatosRedimension(NodoHashTable[] arr, String usu, String contra, String tmstmp,MatrizCarpetas mat) {
         int ubi = hashDivision(usu, arr.length);
         int newUbi;
         int n = 1;
@@ -166,6 +170,7 @@ public class HashTable {
             arr[ubi].setUsuario(usu);
             arr[ubi].setContrasena(contra);
             arr[ubi].setTimestamp(tmstmp);
+            arr[ubi].setMatrizCarpetas(mat);
         } else {
             while (true) {
                 newUbi = ubi + squaring(n);
@@ -174,6 +179,7 @@ public class HashTable {
                         arr[newUbi].setUsuario(usu);
                         arr[newUbi].setContrasena(contra);
                         arr[newUbi].setTimestamp(tmstmp);
+                        arr[newUbi].setMatrizCarpetas(mat);
                         break;
                     }
                 } else {
@@ -281,7 +287,7 @@ public class HashTable {
                 "-o",
                 "C:\\Graficas_Proyecto2\\HashTable.jpg"};
             Runtime.getRuntime().exec(cmd);
-            Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\HashTable.jpg"));
+            //Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\HashTable.jpg"));
         } catch (IOException ioe) {
             System.out.println(ioe);
         }
@@ -388,17 +394,55 @@ public class HashTable {
     }
     
     public NodoHashTable usuarioOnline(String usu) {
-        NodoHashTable temp = new NodoHashTable("-1","-1","-1");
-        for (int i = 0; i < usuarios.length; i++) {
-            if (usuarios[i].usuario.equals(usu)) {
-                temp.usuario = usuarios[i].usuario;
-                temp.contrasena = usuarios[i].contrasena;
-                temp.matriz = usuarios[i].matriz;
-                temp.timestamp = usuarios[i].timestamp;
+        NodoHashTable temp = new NodoHashTable(" "," "," ");
+        for (int i = 0; i < this.usuarios.length; i++) {
+            if (this.usuarios[i].usuario.equals(usu)) {
+                temp.setUsuario(this.usuarios[i].getUsuario());
+                temp.setContrasena(this.usuarios[i].getContrasena());
+                temp.setTimestamp(this.usuarios[i].getTimestamp());
+                temp.setMatrizCarpetas(this.usuarios[i].getMatrizCarpetas());
+                System.out.println("-------------------------aquiestou----------------------");
+                this.usuarios[i].matriz.mostrar();
+                System.out.println("--------------------------------------------------------");
+                
                 break;
             }
         }
         return temp;
     }
-
+    
+    public void insertarVal(String usu,String fila,String col,String cont,String nombre,String contenido,String prop){
+        NodoMatriz temp;
+        for (int i = 0; i < usuarios.length; i++) {
+            if (usuarios[i].usuario.equals(usu)) {
+                usuarios[i].matriz.insertarNodo(fila, col, cont, timestamp());
+                temp = usuarios[i].matriz.retornarArbol(fila, col);
+                temp.arbol.insertarDato(nombre,contenido,prop);
+                System.out.println("comparti archivo");
+                break;
+            }
+        }
+    }
+    
+    
+     public void usuarioHash(String usu,NodoHashTable unir,MatrizCarpetas h) {
+        for (int i = 0; i < this.usuarios.length; i++) {
+            if (this.usuarios[i].usuario.equals(usu)) {
+                this.usuarios[i].setUsuario( unir.getUsuario());
+                this.usuarios[i].setContrasena(unir.getContrasena());
+                this.usuarios[i].setTimestamp(unir.getTimestamp());
+                this.usuarios[i].setMatrizCarpetas(h);
+                System.out.println("*------------------------son iguales------------------------*");
+                System.out.println("-----------------------------Mostrando datos a guardar");
+                System.out.println(unir.usuario);
+                System.out.println(unir.contrasena);
+                System.out.println(unir.timestamp);
+                this.usuarios[i].getMatrizCarpetas().mostrar();
+                System.out.println("-----------------------------");
+                break;
+            }else{
+                System.out.println("caca");
+            }
+        }
+    }
 }

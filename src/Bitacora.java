@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JPanel;
 
 /**
  *
@@ -95,6 +96,7 @@ public class Bitacora {
     public void graficarBitacora() {
         File f;
         f = new File("C:\\Graficas_Proyecto2\\bit.dot");
+        //f = new File("C:\\Graficas_Proyecto2\\bit.dot");
         try {
             FileWriter w = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(w);
@@ -129,10 +131,11 @@ public class Bitacora {
                 "-o",
                 "C:\\Graficas_Proyecto2\\bit.png"};
             Runtime.getRuntime().exec(cmd);
-            Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\bit.png"));
+            //Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\bit.png"));
         } catch (IOException ioe) {
             System.out.println(ioe);
         }
+        System.out.println("imagen generada");
     }
     
     public void inserar(){
@@ -140,7 +143,7 @@ public class Bitacora {
        insertarBitacora("hola2","Santi2");
        insertarBitacora("hola3","Santi3");
        insertarBitacora("hola4","Santi4");
-       graficarBitacora();
+       //graficarBitacora();
     }
     
    

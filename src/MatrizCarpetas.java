@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 /**
  *
  * @author santi
@@ -13,7 +14,7 @@ public class MatrizCarpetas {
 
     static NodoMatriz columnas;
     static NodoMatriz filas;
-    static int m=0;
+    static int m = 0;
 
     public MatrizCarpetas() {
         columnas = new NodoMatriz(" ", " ", " ", " ");
@@ -650,7 +651,10 @@ public class MatrizCarpetas {
                 "-o",
                 "C:\\Graficas_Proyecto2\\Matriz.png"};
             Runtime.getRuntime().exec(cmd);
-            Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\Matriz.png"));
+            /*Runtime rt = Runtime.getRuntime();
+            Process p = rt.exec("dot -Tpng C:\\Graficas_Proyecto2\\Matriz.dot Matriz.dot -o C:\\Graficas_Proyecto2\\Matriz.png");
+            p.waitFor();*/
+            //Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\Matriz.png"));
         } catch (IOException ioe) {
             System.out.println(ioe);
         }
@@ -663,26 +667,132 @@ public class MatrizCarpetas {
         cad = cad.replace("\n", "");
         return cad;
     }
-    
-    public NodoMatriz retornarArbol(String fil,String col){
+
+    public NodoMatriz retornarArbol(String fil, String col) {
         NodoMatriz temp = null;
         NodoMatriz aux = this.filas;
-            if (aux != null) {
-                while (aux != null) {
-                    NodoMatriz tempInt = aux.siguiente;
-                    while (tempInt != null) {
-                        if (tempInt.getColumna().equals(fil) && tempInt.getFila().equals(col)) {
-                            temp = tempInt;
-                            System.out.println("encontre el nodo buscado en matriz");
-                            break;
-                        }
-                        tempInt = tempInt.siguiente;
+        if (aux != null) {
+            while (aux != null) {
+                NodoMatriz tempInt = aux.siguiente;
+                while (tempInt != null) {
+                    if (tempInt.getColumna().equals(col) && tempInt.getFila().equals(fil)) {
+                        temp = tempInt;
+                        System.out.println("encontre el nodo buscado en matriz");
+                        break;
                     }
-                    aux = aux.abajo;
+                    tempInt = tempInt.siguiente;
                 }
-            } else {
-                System.out.println("vacio");
+                aux = aux.abajo;
             }
+        } else {
+            System.out.println("vacio");
+        }
         return temp;
+    }
+
+    public void guardarNodo(String fil, String col, NodoMatriz ins) {
+        NodoMatriz aux = this.filas;
+        if (aux != null) {
+            while (aux != null) {
+                NodoMatriz tempInt = aux.siguiente;
+                while (tempInt != null) {
+                    if (tempInt.getColumna().equals(fil) && tempInt.getFila().equals(col)) {
+                        tempInt = ins;
+                        System.out.println("encontre el nodo buscado en matriz y lo guarde");
+                        break;
+                    }
+                    tempInt = tempInt.siguiente;
+                }
+                aux = aux.abajo;
+            }
+        } else {
+            System.out.println("vacio");
+        }
+    }
+
+    public boolean existe(String fil, String col) {
+        NodoMatriz temp = this.columnas;
+        boolean tempB = false;
+        if (temp != null) {
+            while (temp != null) {
+                NodoMatriz tempInt = temp.abajo;
+                while (tempInt != null) {
+                    if (tempInt.getFila().equals(fil) && tempInt.getColumna().equals(col)) {
+                        tempB = true;
+                    }
+                    tempInt = tempInt.abajo;
+                }
+                temp = temp.siguiente;
+            }
+        } else {
+            System.out.println("vacio");
+        }
+        return tempB;
+    }
+
+    public void graficarGrafo() {
+        File f;
+        f = new File("C:\\Graficas_Proyecto2\\grafo.dot");
+        try {
+            FileWriter w = new FileWriter(f);
+            BufferedWriter bw = new BufferedWriter(w);
+            PrintWriter wr = new PrintWriter(bw);
+            w.write("digraph grafo{\n");
+            w.write("\trankdir=LR;\n");
+            w.write("\tlabelloc=t;\n");
+            w.write("\tsubgraph cluster_0{\n");
+            w.write("\tstyle=filled;\n");
+            w.write("\tcolor=lightgrey;\n");
+            w.write(retornarGrafo());
+            w.write("\tlabel=\"Grafo\";\n");
+            w.write("\t}\n");
+            w.write("\n");
+            w.write("}");
+            wr.close();
+            bw.close();
+        } catch (IOException e) {
+        }
+
+        ejecutarGrafo();
+    }
+
+    public void ejecutarGrafo() {
+        try {
+            String[] cmd = {"C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe",
+                "-Tpng",
+                "C:\\Graficas_Proyecto2\\grafo.dot",
+                "-o",
+                "C:\\Graficas_Proyecto2\\grafo.png"};
+            Runtime.getRuntime().exec(cmd);
+            //Desktop.getDesktop().open(new File("C:\\Graficas_Proyecto2\\grafo.png"));
+        } catch (IOException ioe) {
+            System.out.println(ioe);
+        }
+    }
+
+    public String retornarGrafo() {
+        String cad = "";
+        NodoMatriz temp = this.filas;
+        if (temp != null) {
+            while (temp != null) {
+                NodoMatriz tempInt = temp.siguiente;
+                if (temp.getAbajo()!=null) {
+                    if (!temp.getFila().equals(" ")) {
+                        cad+="\""+tempInt.getFila()+"\"->\""+temp.getAbajo().getFila()+"\";\n";
+                    }
+                }
+                while (tempInt != null) {
+                    
+                    if (!tempInt.getFila().equals(" ")&&!tempInt.getColumna().equals(" ")) {
+                        cad+="\""+tempInt.getFila()+"\"->\""+tempInt.getColumna()+"\";\n";
+                    }
+                    tempInt = tempInt.siguiente;
+                }
+                temp = temp.abajo;
+            }
+        } else {
+            System.out.println("vacio");
+        }
+        return cad;
     }
 }

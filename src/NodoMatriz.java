@@ -1,8 +1,10 @@
+
 /**
  *
  * @author santi
  */
 public class NodoMatriz {
+
     String nombre;
     String fechaCreacion;
     String fila;
@@ -13,9 +15,9 @@ public class NodoMatriz {
     NodoMatriz anterior;
     NodoMatriz arriba;
     NodoMatriz abajo;
-    ArbolAVL_Archivos arbol = new ArbolAVL_Archivos();
+    ArbolAVL_Archivos arbol;
 
-    public NodoMatriz(String fila,String columna,String nombre, String fechaCreacion) {
+    public NodoMatriz(String fila, String columna, String nombre, String fechaCreacion) {
         this.indiceC = 0;
         this.indiceF = 0;
         this.nombre = nombre;
@@ -26,6 +28,21 @@ public class NodoMatriz {
         this.anterior = null;
         this.arriba = null;
         this.abajo = null;
+        this.arbol = new ArbolAVL_Archivos();
+    }
+
+    public NodoMatriz(String fila, String columna, String nombre, String fechaCreacion, ArbolAVL_Archivos arbolito) {
+        this.indiceC = 0;
+        this.indiceF = 0;
+        this.nombre = nombre;
+        this.fechaCreacion = fechaCreacion;
+        this.fila = fila;
+        this.columna = columna;
+        this.siguiente = null;
+        this.anterior = null;
+        this.arriba = null;
+        this.abajo = null;
+        this.arbol = arbolito;
     }
 
     public String getFila() {
@@ -43,7 +60,6 @@ public class NodoMatriz {
     public void setColumna(String columna) {
         this.columna = columna;
     }
-    
 
     public String getNombre() {
         return nombre;

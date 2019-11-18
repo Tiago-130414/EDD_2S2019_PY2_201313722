@@ -15,11 +15,11 @@ public class ArbolAVL_Archivos {
     NodoArbolAVL raiz;
 
     public NodoArbolAVL buscar(String nomA, NodoArbolAVL r) {
-        if (raiz == null) {
+        if (r == null) {
             return null;
         } else if (r.nombre.equals(nomA)) {
             return r;
-        } else if (Integer.parseInt(r.nombre) < Integer.parseInt(nomA)) {
+        } else if (devolverSumaAscii(r.nombre) < devolverSumaAscii(nomA)) {
             return buscar(nomA, r.derecho);
         } else {
             return buscar(nomA, r.izquierdo);
@@ -110,9 +110,9 @@ public class ArbolAVL_Archivos {
         return nuevoPadre;
     }
 
-    public void insertarDato(String n, String c) {
+    public void insertarDato(String n, String c,String prop) {
         String fh = timestamp();
-        NodoArbolAVL nuevo = new NodoArbolAVL(n, c, fh);
+        NodoArbolAVL nuevo = new NodoArbolAVL(n, c, fh,prop);
         if (raiz == null) {
             raiz = nuevo;
         } else {
@@ -250,16 +250,16 @@ public class ArbolAVL_Archivos {
         return sum;
     }
 
-    public String listarNodos(NodoArbolAVL raiz, String usuario) {
+    public String listarNodos(NodoArbolAVL raiz) {
         if (raiz == null) {
             return cad1;
         } else {
-            listarNodos(raiz.izquierdo, usuario);
+            listarNodos(raiz.izquierdo);
             cad1 += "\t\"Nodo" + raiz.nombre + "\"[label=\"<izquierda>|" + "Nombre: " + raiz.nombre
                     + "\\n Contenido:" + raiz.contenido + "\\nFE: " + Integer.toString(raiz.fe)
                     + "\\nAltura: " + Integer.toString(raiz.altura)
-                    + "\\nTimeStamp: " + raiz.timestamp + "\\nPropietario: " + usuario + "|<derecha>\"];\n";
-            listarNodos(raiz.derecho, usuario);
+                    + "\\nTimeStamp: " + raiz.timestamp + "\\nPropietario: " + raiz.propietario + "|<derecha>\"];\n";
+            listarNodos(raiz.derecho);
         }
         return cad1;
     }
@@ -299,7 +299,7 @@ public class ArbolAVL_Archivos {
             w.write("\tlabelloc=t;\n");
             w.write("\tnode [shape = record, style=\"rounded,filled\", fillcolor=\"orange:red\",width=0.7,height=0.5];\n");
             actualizarFE(raiz);
-            w.write(listarNodos(raiz, usuario));
+            w.write(listarNodos(raiz));
             w.write(apuntarNodos(raiz));
             w.write("\tlabel=\"Arbol AVL\";\n");
             w.write("\t}\n");
@@ -323,7 +323,7 @@ public class ArbolAVL_Archivos {
                 "-o",
                 nomImg};
             Runtime.getRuntime().exec(cmd);
-            abrirImg("C:/Graficas_Proyecto2/ArbolAVL_" + dif + ".png");
+            //abrirImg("C:/Graficas_Proyecto2/ArbolAVL_" + dif + ".png");
         } catch (IOException ioe) {
             System.out.println(ioe);
         }
@@ -341,37 +341,7 @@ public class ArbolAVL_Archivos {
 
         }
     }
-
-    public void leerCsv(String nombreAr) {
-        String csvFile = nombreAr.toString();
-        BufferedReader br = null;
-        String line;
-        //int cont = 0;
-        String separador = ",";
-        try {
-            br = new BufferedReader(new FileReader(csvFile));
-            while ((line = br.readLine()) != null) {
-                String[] datos = line.split(separador);
-                if (!datos[0].equals("Archivo") && !datos[1].equals("Contenido")) {
-                    insertarDato(datos[0], datos[1]);
-                }
-
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error al leer archivo: " + e);
-        } catch (IOException e) {
-            System.out.println("Exception" + e);
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    System.out.println("Error al terminar lectura" + e);
-                }
-            }
-        }
-    }
-
+    
     public String timestamp() {
         String tmstamp;
         Date date = new Date();

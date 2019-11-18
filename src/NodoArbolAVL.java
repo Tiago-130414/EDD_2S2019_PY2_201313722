@@ -7,15 +7,17 @@ public class NodoArbolAVL {
     String nombre;
     String contenido;
     String timestamp;
+    String propietario;
     int fe;
     int altura;
     NodoArbolAVL derecho;
     NodoArbolAVL izquierdo;
     
-    public NodoArbolAVL(String nom,String cont,String fh) {
+    public NodoArbolAVL(String nom,String cont,String fh,String prop) {
         this.nombre = nom;
         this.contenido = cont;
         this.timestamp = fh;
+        this.propietario =prop;
         this.fe = 0;
         this.altura = 1;
         this.derecho = null;
@@ -77,6 +79,16 @@ public class NodoArbolAVL {
     public void setAltura(int altura) {
         this.altura = altura;
     }
+
+    public String getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(String propietario) {
+        this.propietario = propietario;
+    }
+    
+    
     
     
 }

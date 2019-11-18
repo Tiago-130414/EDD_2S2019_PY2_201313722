@@ -28,13 +28,13 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        logearse = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         user = new javax.swing.JTextField();
         pass = new javax.swing.JPasswordField();
-        jButton2 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        registrarse = new javax.swing.JButton();
+        login = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("USAC FILE DRIVE");
@@ -45,10 +45,10 @@ public class Login extends javax.swing.JFrame {
         setName("Login"); // NOI18N
         setResizable(false);
 
-        jButton1.setText("INGRESAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        logearse.setText("INGRESAR");
+        logearse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                logearseActionPerformed(evt);
             }
         });
 
@@ -56,15 +56,15 @@ public class Login extends javax.swing.JFrame {
 
         jLabel2.setText("PASSWORD:");
 
-        jButton2.setText("REGISTRARSE");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        registrarse.setText("REGISTRARSE");
+        registrarse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                registrarseActionPerformed(evt);
             }
         });
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/us.png"))); // NOI18N
-        jLabel3.setLabelFor(jLabel1);
+        login.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/us.png"))); // NOI18N
+        login.setLabelFor(jLabel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -79,20 +79,20 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
+                            .addComponent(logearse))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
+                    .addComponent(registrarse)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(pass, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(user, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+            .addComponent(login, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -103,58 +103,43 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(pass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(logearse)
+                    .addComponent(registrarse))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("------------------------------------------");
-        String usuario;
-        usuario = user.getText();
-        String contrasena;
+    private void logearseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logearseActionPerformed
+        usuario = user.getText();    
         contrasena = pass.getText();
         if (usuarios.existeUsuario(limpiarCad(usuario), limpiarCad(contrasena))) {
             Principal ventanaP = new Principal();
             ventanaP.setVisible(true);
             ventanaP.actualizarUsuario(usuario);
             temp = usuarios.usuarioOnline(usuario);
+            aux = temp.getMatrizCarpetas();
+            System.out.println("***************************************");
+            aux.mostrar();
+            System.out.println("***************************************");
             cargarRaiz();
             b.insertarBitacora("Inicio Sesion", usuario);
             this.dispose();
+            user.setText("");
+            pass.setText("");
         } else {
             JOptionPane.showMessageDialog(null, "Error usuario no existe o contraseña invalida");
             user.setText("");
             pass.setText("");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_logearseActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-   /*h.insertarNodo("/","/","kk5","123");   
-     h.insertarNodo("home","home","kk2","123");
-     h.insertarNodo("documents","documents","kk7","123");
-     h.insertarNodo("documents","home","kk8","1234");
-     h.insertarNodo("usac","usac","kk30","123");
-     h.insertarNodo("/","documents","pre","12345");
-     h.insertarNodo("documents","usac","cagada","12345");
-     h.insertarNodo("a","a","hola","12345");
-     h.insertarNodo("home","/","preo","12345");
-     //h.insertarNodo("usac","documents","50","1324");
-     h.insertarNodo("vendor","vendor","kk4","123");
-     h.insertarNodo("view","view","kk6","123");
-     h.insertarNodo("vendor","usac","kk48","123");
-     h.insertarNodo("vendor","documents","kk49","123");
-     h.insertarNodo("vendor","prueba","aqui estoy","123");
-     h.insertarNodo("hola","view","gh","123");
-     h.graficarBitacora();
-     h.mostrar();*/
+    private void registrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarseActionPerformed
         Registro nuevoUsuarioR = new Registro();
         nuevoUsuarioR.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_registrarseActionPerformed
 
     @Override
     public Image getIconImage() {
@@ -177,19 +162,21 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton logearse;
+    private javax.swing.JLabel login;
     private javax.swing.JPasswordField pass;
+    private javax.swing.JButton registrarse;
     private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
     public static HashTable usuarios = new HashTable();
     public static NodoHashTable temp;
+    public static MatrizCarpetas aux = new MatrizCarpetas();
     public static Bitacora b = new Bitacora();
-    MatrizCarpetas h = new MatrizCarpetas();
-
+    String usuario;
+    String contrasena;
+    
     public String limpiarCad(String c) {
         String k;
         k = c.replace(" ", "");
@@ -199,9 +186,13 @@ public class Login extends javax.swing.JFrame {
     }
 
     public void cargarRaiz() {
-        if (Login.temp != null) {
-            Login.temp.matriz.insertarNodo("/", "/", "datos", "123456");
-            Login.temp.matriz.graficarBitacora();
+        if (aux != null) {
+            System.out.println(aux.existe("/","/"));
+            if (aux.existe("/","/")) {
+                System.out.println("ya no agrego");
+            }else{
+                aux.insertarNodo("/", "/", "datos", "123456");
+            }
         } else {
             System.out.println("paque");
         }
